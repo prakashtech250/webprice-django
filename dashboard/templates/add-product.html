@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Add Product
+{% endblock %}
+
+{% block content %}
+  <div class="container px-6 mx-auto grid">
+    {% comment %} <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Add Product</h2> {% endcomment %}
+    <h4 class="text-lg font-semibold text-gray-600 dark:text-gray-300">Add Products</h4>
+    <div class="px-4 py-3 my-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <form method="POST">
+        {% csrf_token %}
+        <label class="my-2 block text-sm" for="{{ form.asin.id_for_label }}">
+          <span class="text-gray-700 dark:text-gray-400">{{ form.asin.label }}</span>
+          <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" placeholder="XXXXXXXXXX" value="{% if form.asin.value %}{{ form.asin.value }}{% endif %}" name="{{ form.asin.html_name }}"/>
+        </label>
+        <span class="text-xs text-red-600 dark:text-red-400">
+          {{ form.asin.errors }}
+        </span>
+        <label class="block my-2 text-sm" for="{{ form.domain.id_for_label }}">
+          <span class="text-gray-700 dark:text-gray-400">{{ form.domain.label }}</span>
+          <select class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray rounded-lg" name="{{ form.domain.html_name }}">
+            {% for opt in form.domain %}
+              {% if opt %}
+                <span>{{ opt }}</span>
+              {% endif %}
+            {% endfor %}    
+          </select>
+        </label>
+        <span class="my-2 text-xs text-red-600 dark:text-red-400">
+          {{ form.domain.errors }}
+        </span>
+
+        <label class="block my-2 text-sm" for="{{ form.title.id_for_label }}">
+          <span class="text-gray-700 dark:text-gray-400">{{ form.title.label }}</span>
+          <textarea class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray rounded-lg" rows="2" placeholder="Enter Title of Product of Click Get Info" name="{{ form.title.html_name }}" value="{{ form.title.value }}">{% if form.title.value %}{{ form.title.value }}{% endif %}</textarea>
+        </label>
+        <span class="text-xs text-red-600 dark:text-red-400">
+          {{ form.title.errors }}
+        </span>
+        <label class="my-2 block text-sm" for="{{ form.price.id_for_label }}">
+          <span class="text-gray-700 dark:text-gray-400">{{ form.price.label }}</span>
+          <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" placeholder="00.0" value="{% if form.price.value %}{{ form.price.value }}{% else %}0.0{% endif %}" name="{{ form.price.html_name }}"/>
+        </label>
+        <span class="text-xs text-red-600 dark:text-red-400">
+          {{ form.price.errors }}
+        </span>
+        <label class="my-2 block text-sm" for="{{ form.image_url.id_for_label }}">
+          <span class="text-gray-700 dark:text-gray-400">{{ form.image_url.label }}</span>
+          <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" placeholder="" value="{% if form.image_url.value %}{{ form.image_url.value }}{% endif %}" name="{{ form.image_url.html_name }}" type='hidden'/>
+          <span class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg">{% if form.image_url.value %}{{ form.image_url.value }}{% else %} Click on Get Info to get imageUrl {% endif %}</span>
+        </label>
+        <!-- Divs are used just to display the examples. Use only the button. -->
+        <div class="my-6 mb-4 flex justify-center gap-4">
+          <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-purple" type="submit" name='get_info'>Get Info</button>
+          <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" type="submit" name='submit'>Submit</button>
+        </div>
+      </form>
+
+      <div>
+
+</div>
+        
+    </div>
+  </div>
+{% endblock %}

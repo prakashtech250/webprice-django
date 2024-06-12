@@ -1,0 +1,89 @@
+{% extends "layout1.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+    <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+      <div
+        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800"
+      >
+        <div class="flex flex-col overflow-y-auto md:flex-row">
+          <div class="h-32 md:h-auto md:w-1/2">
+            <img
+              aria-hidden="true"
+              class="object-cover w-full h-full dark:hidden"
+              src="{% static 'img/login-office-dark.jpeg' %}"
+              alt="Office"
+            />
+            <img
+              aria-hidden="true"
+              class="hidden object-cover w-full h-full dark:block"
+              src="{% static 'img/login-office-dark.jpeg' %}"
+              alt="Office"
+            />
+          </div>
+          <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div class="w-full">
+              <h1
+                class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200"
+              >
+                Login
+              </h1>
+              <form method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                  <label class="block text-sm mt-4" for="{{ form.username.id_for_label }}">
+                    <span class="text-gray-700 dark:text-gray-400">{{ form.username.label }}</span>
+                  <input class="block w-full my-2 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" id="{{ form.username.id_for_label }}" maxlength="30" name="{{ form.username.html_name }}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" type="text" /> 
+                  <span class="mt-2 text-xs text-red-600 dark:text-red-400">
+                    {{ form.username.errors }}
+                  </span>
+                  <label class="block text-sm mt-4" for="{{ form.password.id_for_label }}">
+                    <span class="text-gray-700 dark:text-gray-400">{{ form.password.label }}</span>
+                  <input class="block w-full my-2 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" value="{% if form.password.value %}{{ form.password.value }}{% endif %}" type="password" /> 
+                  <span class="mt-2 text-xs text-red-600 dark:text-red-400">
+                    {{ field.errors }}
+                  </span>
+                    
+                </div>
+  
+              
+              <!-- You should use a button here, as the anchor is only used for the example  -->
+              <a class="block w-full px-4 py-2 my-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" href="{% url 'login' %}">
+                <button class="btn btn-primary" type='submit'>Login</button>
+              </a>
+            </form>
+            <span class="mt-2 text-xs text-red-600 dark:text-red-400">
+              {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              </span>
+              <hr class="my-8" />
+
+              <p class="mt-4">
+                <a
+                  class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+                  href="{% url 'forgot' %}"
+                >
+                  Forgot your password?
+                </a>
+              </p>
+              <p class="mt-1">
+                <a
+                  class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+                  href="{% url 'signup' %}"
+                >
+                  Create account
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
