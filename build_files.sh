@@ -12,6 +12,8 @@ pip install -r requirements.txt
 # collect static files using the Python interpreter from venv
 python manage.py collectstatic --noinput
 
+python manage.py tailwind start
+
 echo "BUILD END"
 
 # [optional] Start the application here 
