@@ -1,6 +1,6 @@
-{% comment %} {% load static tailwind_tags %} {% endcomment %}
+{% load static tailwind_tags %}
 {% load static %}
-{% load icons %}
+{% comment %} {% load icons %} {% endcomment %}
 
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
@@ -30,8 +30,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% comment %} {% tailwind_css %} {% endcomment %}
+    {% tailwind_css %}
   </head>
   <body>
     <div
@@ -59,7 +58,7 @@
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                 href="{% url menuUrl %}"
               >
-              <span>{% icon menuUrl %}</span>
+              {% comment %} <span>{% icon menuUrl %}</span> {% endcomment %}
                 <span class="ml-4">{{ menu }}</span>
               </a>
             </li>
@@ -117,7 +116,7 @@
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                 href="{% url menuUrl %}"
-                <span>{% icon menuUrl %}</span>
+                {% comment %} <span>{% icon menuUrl %}</span> {% endcomment %}
                 <span class="ml-4">{{ menu }}</span>
               </a>
             </li>
@@ -310,7 +309,7 @@
                     aria-hidden="true"
                   /> {% endcomment %}
                   
-                  {% icon 'user' %}
+                  {% comment %} {% icon 'user' %} {% endcomment %}
                 </button>
                 <template x-if="isProfileMenuOpen">
                   <ul
@@ -337,7 +336,7 @@
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                         >
-                          {% icon 'profile' %}
+                          {% comment %} {% icon 'profile' %} {% endcomment %}
                     </span>
                         <span>Profile</span>
                       </a>
@@ -347,7 +346,7 @@
                         class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                         href="{% url "settings" %}"
                       >
-                        <span class="w-4 h-4 mr-3"
+                        {% comment %} <span class="w-4 h-4 mr-3"
                         aria-hidden="true"
                         fill="none"
                         stroke-linecap="round"
@@ -355,7 +354,7 @@
                         stroke-width="2"
                         viewBox="0 0 24 24"
                         stroke="currentColor">{% icon 'settings' %}</span>
-                        <span>Settings</span>
+                        <span>Settings</span> {% endcomment %}
                       </a>
                     </li>
                     <li class="flex">

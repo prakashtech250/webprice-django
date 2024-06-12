@@ -1,4 +1,4 @@
-{% comment %} {% load static tailwind_tags %} {% endcomment %}
+{% load static tailwind_tags %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -17,8 +17,7 @@
       defer
     ></script>
     <script src="{% static "js/init-alpine.js" %}"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-	{% comment %} {% tailwind_css %} {% endcomment %}
+	{% tailwind_css %}
   </head>
 
 	<body>
