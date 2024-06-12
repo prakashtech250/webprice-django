@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
@@ -10,3 +12,5 @@ urlpatterns = [
     path('product/<int:pk>/edit/', views.update_product, name='update_product'),
     path('product/<int:pk>/delete/', views.delete_product, name='delete_product')
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
