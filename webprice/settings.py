@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-k59g*za)_)q*z+8c#mwk^mpentj3v9te=5ws@4k))ht(_$i#_=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1','localhost']
 
 
 # Application definition
@@ -85,24 +85,23 @@ WSGI_APPLICATION = 'webprice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
-#     'default': {                                    # conveniently, postgres on supabase as well
-#         'ENGINE' : 'django.db.backends.postgresql',
-#         'NAME' : 'postgres',
-#         'HOST' : os.environ.get('SUPABASE_HOST'),
-#         'PASSWORD': os.environ.get('SUPABASE_PW'),
-#         'PORT': 5432,
-#         'USER': 'postgres.iebipxkbkcfzgnmrgazr',
-#         'CERT' : 'config.prod-ca-2021.crt',             # download this from database/settings and put in your main app folder
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'fIGkCEfiBOHsgvNcfIXDNUIJdloikflv',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '38939',
+    }
+}
 
 
 # Password validation
@@ -141,6 +140,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
