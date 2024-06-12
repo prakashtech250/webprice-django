@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'dashboard',
     'accounts',
     'tailwind',
-    'theme'
-    # 'django_browser_reload',
+    'theme',
     'django_icons',
     ]
 
