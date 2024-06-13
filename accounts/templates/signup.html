@@ -50,21 +50,23 @@
                   
               </div>
 
-              <div class="flex mt-6 text-sm">
-                <label class="flex items-center dark:text-gray-400">
-                  <input type="checkbox" class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray" />
-                  <span class="ml-2">
-                    I agree to the
-                    <span class="underline">privacy policy</span>
-                  </span>
-                </label>
-              </div>
+
+              <hr class="my-8">
 
               <!-- You should use a button here, as the anchor is only used for the example -->
-              <a class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" href="{% url 'login' %}">
-                <button class="btn btn-primary" type='submit' value='Create Account'>Create Account</button>
-              </a>
+              <button class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" type="submit">
+                Create Account
+              </button>
             </form>
+            <span class="my-4 text-xs text-red-600 dark:text-red-400">
+              {% if messages %}
+              <ul class="messages">
+                  {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              </span>
             <p class="mt-2">
               <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href="{% url 'login' %}">Already have an account? Login</a>
             </p>
