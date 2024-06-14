@@ -1,4 +1,4 @@
-
+{% load static tailwind_tags %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -17,9 +17,16 @@
       defer
     ></script>
     <script src="{% static "js/init-alpine.js" %}"></script>
+    {% tailwind_css %}
   </head>
 
 	<body>
+    <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
+      <div
+        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800"
+      >
         {% block content %}This is content{% endblock content %}
+    </div>
+  </div>
 	</body>
 </html>

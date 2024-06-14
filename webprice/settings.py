@@ -43,10 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard',
-    'accounts',
+    # 'accounts',
     'tailwind',
     'theme',
     'django_icons',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     ]
 
 MIDDLEWARE = [
@@ -57,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django_browser_reload.middleware.BrowserReloadMiddleware'
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'webprice.urls'
@@ -168,7 +172,9 @@ DJANGO_ICONS = {
 
 # Redirect URLs after login/logout
 LOGIN_REDIRECT_URL = 'dashboard'  # Redirect to your desired view after login
-LOGOUT_REDIRECT_URL = 'login'  # Redirect to login view after logout
+LOGOUT_REDIRECT_URL = 'account_login'  # Redirect to login view after logout
+
+
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-info',
@@ -185,3 +191,22 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv('EMAIL_USER') 
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS') 
 EMAIL_PORT = 587  
+
+# django_project/settings.py
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SITE_ID = 1  # new
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'

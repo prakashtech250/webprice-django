@@ -138,3 +138,5 @@ GitHub.sublime-settings
 .history
 
 node_modules
+.env
+db.sqlite3
