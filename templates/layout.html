@@ -2,7 +2,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,9 +21,9 @@
   </head>
 
 	<body>
-    <div class="flex items-center min-h-screen p-4 bg-gray-50 dark:bg-gray-900">
+    <div class="flex items-center min-h-screen p-4 bg-slate-900">
       <div
-        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800"
+        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden rounded-lg shadow-xl bg-slate-800"
       >
         {% block content %}This is content{% endblock content %}
     </div>

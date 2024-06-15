@@ -6,23 +6,22 @@
 {% block title %}Login{% endblock title %}
 
 {% block content %}
-    <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div
-        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800"
+        class="flex-1 h-full max-w-4xl mx-auto overflow-hidden rounded-lg shadow-xl bg-slate-800"
       >
         <div class="flex flex-col overflow-y-auto md:flex-row">
           <div class="h-32 md:h-auto md:w-1/2">
             <img
               aria-hidden="true"
-              class="hidden object-cover w-full h-full dark:block"
-              src="{% static 'img/create-account-office-dark.jpeg' %}"
+              class="object-cover w-full h-full block"
+              src="{% static 'img/login-office.jpeg' %}"
               alt="Office"
             />
           </div>
           <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div class="w-full">
               <h1
-                class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-200"
+                class="mb-2 text-xl font-semibold text-slate-200"
               >
                 Login
               </h1>
@@ -30,15 +29,15 @@
                 {% csrf_token %}
                 <div class="input-group">
                   <label class="block text-sm mt-2" for="{{ form.login.id_for_label }}">
-                    <span class="text-gray-700 dark:text-gray-400">{{ form.login.label }}</span>
-                  <input class="block w-full my-2 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" id="{{ form.login.id_for_label }}" maxlength="30" name="{{ form.login.html_name }}" value="{% if form.login.value %}{{ form.login.value }}{% endif %}" type="text" /> 
-                  <span class="mt-2 text-xs text-red-600 dark:text-red-400">
+                    <span class="text-slate-400">{{ form.login.label }}</span>
+                  <input class="block w-full my-2 text-sm border-slate-600 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" id="{{ form.login.id_for_label }}" maxlength="30" name="{{ form.login.html_name }}" value="{% if form.login.value %}{{ form.login.value }}{% endif %}" type="text" /> 
+                  <span class="mt-2 text-xs text-red-400">
                     {{ form.login.errors }}
                   </span>
                   <label class="block text-sm mt-2" for="{{ form.password.id_for_label }}">
-                    <span class="text-gray-700 dark:text-gray-400">{{ form.password.label }}</span>
-                  <input class="block w-full my-2 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input rounded-lg" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" value="{% if form.password.value %}{{ form.password.value }}{% endif %}" type="password" /> 
-                  <span class="mt-2 text-xs text-red-600 dark:text-red-400">
+                    <span class="text-slate-400">{{ form.password.label }}</span>
+                  <input class="block w-full my-2 text-sm border-slate-600 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" value="{% if form.password.value %}{{ form.password.value }}{% endif %}" type="password" /> 
+                  <span class="mt-2 text-xs text-red-400">
                     {{ form.password.errors }}
                   </span>
                     
@@ -55,7 +54,7 @@
               </button> {% endcomment %}
               
             </form>
-            <span class="mt-2 text-xs text-red-600 dark:text-red-400">
+            <span class="mt-2 text-xs text-red-400">
               {% if messages %}
               <ul class="messages">
                   {% for message in messages %}
@@ -68,7 +67,7 @@
 
               <p class="mt-4">
                 <a
-                  class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+                  class="text-sm font-medium text-purple-400 hover:underline"
                   href="{% url 'account_reset_password' %}"
                 >
                   Forgot your password?
@@ -76,7 +75,7 @@
               </p>
               <p class="mt-1">
                 <a
-                  class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+                  class="text-sm font-medium text-purple-400 hover:underline"
                   href="{% url 'account_signup' %}"
                 >
                   Create account
@@ -86,5 +85,5 @@
           </div>
         </div>
       </div>
-    </div>
+
 {% endblock %}

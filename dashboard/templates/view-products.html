@@ -8,47 +8,52 @@
 
 {% block content %}
 <div x-data="{ isModalOpen: false, productId: null, productName: '', openModal(id, asin) { this.productId = id; this.productName = asin; this.isModalOpen = true }, closeModal() { this.isModalOpen = false; this.productId = null; this.productName = '' }, deleteProduct() { $.ajax({ url: '/dashboard/product/' + this.productId + '/delete/', type: 'POST', data: { csrfmiddlewaretoken: '{{ csrf_token }}' }, success: function(response) { window.location.reload(); } }); } }">
-  <div class="container px-6 mx-auto grid">
-    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">View Products</h2>
-    <div class="my-6 w-full overflow-hidden rounded-lg shadow-md">
+  <div class="container px-6 my-4 mx-auto grid">
+    <div class="flex gap-10">
+    <h2 class="text-lg my-2 font-semibold text-slate-200 justify-self-start">View Products</h2>
+    {% comment %} <div class='my-2 text-slate-200 '>
+      {% icon 'edit' %}
+    </div> {% endcomment %}
+  </div>
+    <div class="my-2 w-full overflow-hidden rounded-lg shadow-md shadow-slate-950">
       <div class="w-full overflow-x-auto">
         <table class="w-full whitespace-no-wrap">
           <thead>
-            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-              <th class="px-4 py-3">Title</th>
-              <th class="px-4 py-3">Price</th>
-              <th class="px-4 py-3">Domain</th>
-              <th class="px-4 py-3">Date</th>
-              <th class="px-4 py-3">Actions</th>
+            <tr class="text-xs font-semibold tracking-wide text-left  uppercase border-b border-slate-700 text-slate-200 bg-slate-800">
+              <th class="px-3 py-3">Title</th>
+              <th class="px-3 py-3">Price</th>
+              <th class="px-3 py-3">Domain</th>
+              <th class="px-3 py-3">Date</th>
+              <th class="px-3 py-3">Actions</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+          <tbody class="divide-y divide-slate-700 bg-slate-800">
             {% for product in all_products %}
-              <tr class="text-gray-700 dark:text-gray-400">
-                <td class="px-4 py-3">
+              <tr class="text-slate-200">
+                <td class="px-3 py-2">
                   <div class="flex items-center text-sm">
                     <!-- Avatar with inset shadow -->
                     <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                       <img class="object-cover w-full h-full rounded-md" src="{% if product.image_url %}{{product.image_url}}{% else %}{% static 'img/default-product.png' %}{% endif %}" alt="Image of {{product.asin}}" loading="lazy" />
-                      <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
+                      <div class="absolute inset-0 rounded-full" aria-hidden="true"></div>
                     </div>
                     <div>
                       <p class="font-semibold">{{ product.asin }}</p>
-                      <p class="text-xs text-gray-600 dark:text-gray-400">{{ product.title }}</p>
+                      <p class="text-xs text-slate-400">{{ product.title }}</p>
                     </div>
                   </div>
                 </td>
-                <td class="px-4 py-3 text-sm">{{ product.price }}</td>
-                <td class="px-4 py-3 text-sm">{{ product.domain }}</td>
-                <td class="px-4 py-3 text-sm">{{ product.date_added }}</td>
-                <td class="px-4 py-3">
+                <td class="px-3 py-3 text-sm">{{ product.price }}</td>
+                <td class="px-3 py-3 text-sm">{{ product.domain }}</td>
+                <td class="px-3 py-3 text-sm">{{ product.date_added }}</td>
+                <td class="px-3 py-3">
                   <div class="flex items-center space-x-4 text-sm">
                     <a href="{% url 'update_product' product.id %}">
-                    <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Edit">
+                    <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg text-slate-400 focus:outline-none focus:shadow-outline-slate" aria-label="Edit">
                       {% icon "edit" %}
                     </button>
                   </a>
-                      <button @click="openModal({{ product.id }}, '{{ product.asin }}')" class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Delete">
+                      <button @click="openModal({{ product.id }}, '{{ product.asin }}')" class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg text-slate-400 focus:outline-none focus:shadow-outline-slate" aria-label="Delete">
                         {% icon "delete" %}
                       </button>
                   </div>
@@ -58,7 +63,7 @@
           </tbody>
         </table>
       </div>
-      <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+      <div class="grid px-4 py-3 text-xs font-semibold tracking-wide uppercase border-t border-slate-700 sm:grid-cols-9 text-slate-200 bg-slate-800">
         <span class="flex items-center col-span-1">Page {{ all_products.number }} of {{ all_products.paginator.num_pages }}</span>
         <span class="flex items-center col-span-1">Total: {{ total_product }}</span>
         <!-- Pagination -->
@@ -125,20 +130,20 @@
       x-transition:leave="transition ease-in duration-150"
       x-transition:leave-start="opacity-100"
       x-transition:leave-end="opacity-0 transform translate-y-1/2"
-      class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
+      class="w-full px-6 py-4 overflow-hidden rounded-t-lg bg-slate-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
       role="dialog"
       id="modal"
   >
       <div class="mt-4 mb-6">
-          <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
+          <p class="mb-2 text-lg font-semibold text-slate-200">
               Delete <span x-text="productName"></span>?
           </p>
-          <p class="text-sm text-gray-700 dark:text-gray-400">
+          <p class="text-sm text-slate-200">
               Are you sure you want to delete <span x-text="productName"></span>?
           </p>
       </div>
-      <footer class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800">
-          <button @click="closeModal" class="w-full px-5 py-3 text-sm font-medium leading-5 text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray">
+      <footer class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row  bg-slate-800">
+          <button @click="closeModal" class="w-full px-5 py-3 text-sm font-medium leading-5 transition-colors duration-150 border border-slate-300 rounded-lg text-slate-200 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-slate-500 focus:border-slate-500 active:text-slate-500 focus:outline-none focus:shadow-outline-slate">
               Cancel
           </button>
           
