@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-k59g*za)_)q*z+8c#mwk^mpentj3v9te=5ws@4k))ht(_$i#_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1','localhost','.now.sh']
 
@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'django_icons',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.google',
     ]
 
 MIDDLEWARE = [
@@ -87,24 +87,23 @@ WSGI_APPLICATION = 'webprice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('PGNAME'),
+        'USER': os.getenv('PGUSER'),
+        'PASSWORD': os.getenv('PGPASS'),
+        'HOST': os.getenv('PGHOST'),
+        'PORT': os.getenv('PGPORT'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.getenv('PGNAME'),
-            'USER': os.getenv('PGUSER'),
-            'PASSWORD': os.getenv('PGPASS'),
-            'HOST': os.getenv('PGHOST'),
-            'PORT': os.getenv('PGPORT'),
-        }
-    }
+}
 
 
 # Password validation
@@ -142,8 +141,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, STATIC_URL)]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', STATIC_URL)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -165,7 +164,9 @@ DJANGO_ICONS = {
         'delete': {"name": "fa-solid fa-trash"},
         "edit": {"name": "fa-solid fa-pen"},
         "group": {"name": "fa-solid fa-cart-shopping"},
-        "user": {"name": "fa-solid fa-user"}
+        "user": {"name": "fa-solid fa-user"},
+        "google": {"name": "fa-brands fa-google"},
+        "bell": {"name": "fa-solid fa-bell"},
     },
 }
 
@@ -209,3 +210,18 @@ ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 # ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}

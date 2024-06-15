@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load icons %}
+{% load static %}
 
 {% block title %}
   View Products
@@ -28,7 +29,7 @@
                   <div class="flex items-center text-sm">
                     <!-- Avatar with inset shadow -->
                     <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-                      <img class="object-cover w-full h-full rounded-md" src="{{product.image_url}}" alt="Image of {{product.asin}}" loading="lazy" />
+                      <img class="object-cover w-full h-full rounded-md" src="{% if product.image_url %}{{product.image_url}}{% else %}{% static 'img/default-product.png' %}{% endif %}" alt="Image of {{product.asin}}" loading="lazy" />
                       <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                     </div>
                     <div>
@@ -42,9 +43,11 @@
                 <td class="px-4 py-3 text-sm">{{ product.date_added }}</td>
                 <td class="px-4 py-3">
                   <div class="flex items-center space-x-4 text-sm">
-                    {% comment %} <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Edit">
+                    <a href="{% url 'update_product' product.id %}">
+                    <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Edit">
                       {% icon "edit" %}
-                    </button> {% endcomment %}
+                    </button>
+                  </a>
                       <button @click="openModal({{ product.id }}, '{{ product.asin }}')" class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray" aria-label="Delete">
                         {% icon "delete" %}
                       </button>
@@ -76,9 +79,11 @@
                   <a href="?page={{ all_products.previous_page_number }}"><button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">{{ all_products.previous_page_number }}</button></a>
                 </li>
               {% endif %}
-              <li>
-                <button class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">{{ all_products.number }}</button>
-              </li>
+              {% if all_products.has_previous or all_products.has_next %}
+                <li>
+                  <button class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">{{ all_products.number }}</button>
+                </li>
+              {% endif %}
               {% if all_products.has_next %}
                 <li>
                   <a href="?page={{ all_products.next_page_number }}"><button class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">{{ all_products.next_page_number }}</button></a>

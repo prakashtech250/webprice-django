@@ -37,10 +37,14 @@ def _requests(url):
     # payload = {'api_key': API, 'url': url}
     # r = requests.get('https://api.scraperapi.com', params=payload, headers=headers)
     while True:
-        r = requests.get(url, headers=HEADERS)
-        print(r)
-        if r.status_code == 200:
-            break
+        try:
+            r = requests.get(url, headers=HEADERS)
+            if r.status_code == 200:
+                break
+        except Exception as e:
+            print(f'Error: {e}')
+            time.sleep(3)
+            return None
     return r
 
 def get_UA():

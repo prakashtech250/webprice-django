@@ -5,10 +5,10 @@ from .models import UserSettings
 # Register your models here.
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('asin', 'title', 'price', 'domain','user','date_added')
+    list_display = ('asin', 'title', 'price', 'domain','user','last_checked')
 
 class SettingsAdmin(admin.ModelAdmin):
-    list_display = ('user', 'currency','discord', 'change_per')
+    list_display = ('user', 'currency','discord_webhook_url','notification_preference','change_per')
 
 admin.site.register(ProductsDB, ProductsAdmin)
 admin.site.register(UserSettings, SettingsAdmin)
