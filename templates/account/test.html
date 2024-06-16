@@ -1,0 +1,20 @@
+
+<div class="flex items-center">
+    <input class="block w-full my-2 text-sm border-slate-600 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" id="id_password" maxlength="30" name="{{ form.password.html_name }}" value="{% if form.password.value %}{{ form.password.value }}{% endif %}" type="password" />
+    <button type="button" class="block text-slate-200 -ml-8 focus:outline-none" id="togglePassword">
+      show
+      {% icon "user" %}
+    </button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const passIn = document.getElementById('id_password');
+      const btn = document.getElementById('togglePassword');
+      btn.addEventListener('click', function () {
+          const type =
+              passIn.getAttribute('type') ===
+                  'password' ? 'text' : 'password';
+          passIn.setAttribute('type', type);
+      });
+  });

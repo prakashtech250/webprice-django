@@ -39,7 +39,7 @@
                     </div>
                     <div>
                       <p class="font-semibold">{{ product.asin }}</p>
-                      <p class="text-xs text-slate-400">{{ product.title }}</p>
+                      <p class="text-xs text-slate-200">{{ product.title }}</p>
                     </div>
                   </div>
                 </td>
@@ -49,11 +49,11 @@
                 <td class="px-3 py-3">
                   <div class="flex items-center space-x-4 text-sm">
                     <a href="{% url 'update_product' product.id %}">
-                    <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg text-slate-400 focus:outline-none focus:shadow-outline-slate" aria-label="Edit">
+                    <button class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg text-slate-200 focus:outline-none focus:shadow-outline-slate" aria-label="Edit">
                       {% icon "edit" %}
                     </button>
                   </a>
-                      <button @click="openModal({{ product.id }}, '{{ product.asin }}')" class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg text-slate-400 focus:outline-none focus:shadow-outline-slate" aria-label="Delete">
+                      <button @click="openModal({{ product.id }}, '{{ product.asin }}')" class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg text-slate-200 focus:outline-none focus:shadow-outline-slate" aria-label="Delete">
                         {% icon "delete" %}
                       </button>
                   </div>
@@ -63,7 +63,7 @@
           </tbody>
         </table>
       </div>
-      <div class="grid px-4 py-3 text-xs font-semibold tracking-wide uppercase border-t border-slate-700 sm:grid-cols-9 text-slate-200 bg-slate-800">
+      <div class="grid px-3 py-3 text-xs font-semibold tracking-wide uppercase border-t border-slate-700 sm:grid-cols-9 text-slate-200 bg-slate-800">
         <span class="flex items-center col-span-1">Page {{ all_products.number }} of {{ all_products.paginator.num_pages }}</span>
         <span class="flex items-center col-span-1">Total: {{ total_product }}</span>
         <!-- Pagination -->

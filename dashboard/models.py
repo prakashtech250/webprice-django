@@ -12,7 +12,7 @@ class ProductsDB(models.Model):
         ('DE', 'Germany (gr)'),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=500)
     asin = models.CharField(max_length=12)
     domain = models.CharField(max_length=3, choices=COUNTRY_CHOICES, default='COM')
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)

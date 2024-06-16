@@ -30,13 +30,21 @@
                 <div class="input-group">
                   <label class="block text-sm mt-2" for="{{ form.login.id_for_label }}">
                     <span class="text-slate-400">{{ form.login.label }}</span>
+                  </label>
                   <input class="block w-full my-2 text-sm border-slate-600 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" id="{{ form.login.id_for_label }}" maxlength="30" name="{{ form.login.html_name }}" value="{% if form.login.value %}{{ form.login.value }}{% endif %}" type="text" /> 
                   <span class="mt-2 text-xs text-red-400">
                     {{ form.login.errors }}
                   </span>
                   <label class="block text-sm mt-2" for="{{ form.password.id_for_label }}">
                     <span class="text-slate-400">{{ form.password.label }}</span>
-                  <input class="block w-full my-2 text-sm border-slate-600 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" id="{{ form.password.id_for_label }}" maxlength="30" name="{{ form.password.html_name }}" value="{% if form.password.value %}{{ form.password.value }}{% endif %}" type="password" /> 
+                  </label>
+                  <div class="flex items-center">
+                    <input class="block w-full my-2 text-sm border-slate-600 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" id="id_password" maxlength="30" name="{{ form.password.html_name }}" value="{% if form.password.value %}{{ form.password.value }}{% endif %}" type="password" />
+                    <button type="button" class="text-sm text-slate-400 -ml-12" id="togglePassword">
+                      show
+                      {% icon "user" %}
+                    </button>
+                    </div>
                   <span class="mt-2 text-xs text-red-400">
                     {{ form.password.errors }}
                   </span>
@@ -85,5 +93,17 @@
           </div>
         </div>
       </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passIn = document.getElementById('id_password');
+            const btn = document.getElementById('togglePassword');
+            btn.addEventListener('click', function () {
+                const type = passIn.getAttribute('type') === 'password' ? 'text' : 'password';
+                passIn.setAttribute('type', type);
+                btn.textContent = type === 'password' ? 'Show' : 'Hide';
+            });
+        });
+    </script>
 
 {% endblock %}
