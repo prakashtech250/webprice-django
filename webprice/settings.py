@@ -106,6 +106,7 @@ DATABASES = {
 }
 
 
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -212,19 +213,5 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_UNKNOWN_ACCOUNTS = True
 ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
-# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+# AUTH_USER_MODEL = 'dashboard.UserSettings'
 
-
-# Provider specific settings
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
-    }
-}

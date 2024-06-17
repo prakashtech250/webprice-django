@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ProductsDB
-from .forms import ProductForm
+from .models import ProductsDB, UserSettings
+from .forms import ProductForm, SettingsForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -83,7 +83,21 @@ def profile(request):
 
 @login_required
 def settings(request):
-    return render(request, 'settings.html', {'menus': sidebar_menus})
+    user = request.user
+    user_settings = get_object_or_404(UserSettings, user=user)
+    if request.method == "POST":
+        form = SettingsForm(request.POST, instance=user_settings)
+        if form.is_valid():
+            new_settings = form.save()
+            new_settings.user = request.user
+            new_settings.save()
+            messages.success(request, 'New Setting is saved.')
+            return redirect('settings')
+        else:
+            print('form is not valid')
+    else:
+        form = SettingsForm(instance=user_settings)
+    return render(request, 'settings.html', {'menus': sidebar_menus, 'form': form})
 
 
 @login_required

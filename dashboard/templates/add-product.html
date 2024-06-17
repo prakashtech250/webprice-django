@@ -11,46 +11,48 @@
     <div class="px-4 py-2 my-2 rounded-lg shadow-md shadow-slate-950 bg-slate-800">
       <form method="POST">
         {% csrf_token %}
-        <label class="my-2 block text-sm" for="{{ form.asin.id_for_label }}">
+        <label class="my-2 px-2 block text-sm" for="{{ form.asin.id_for_label }}">
           <span class=" text-slate-200">{{ form.asin.label }}</span>
-          <input class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="XXXXXXXXXX" value="{% if form.asin.value %}{{ form.asin.value }}{% endif %}" name="{{ form.asin.html_name }}"/>
         </label>
+          <input class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="XXXXXXXXXX" value="{% if form.asin.value %}{{ form.asin.value }}{% endif %}" name="{{ form.asin.html_name }}"/>
         <span class="text-xs text-red-400">
           {{ form.asin.errors }}
         </span>
-        <label class="block my-2 text-sm" for="{{ form.domain.id_for_label }}">
+        <label class="block my-2 px-2 text-sm" for="{{ form.domain.id_for_label }}">
           <span class=" text-slate-200">{{ form.domain.label }}</span>
-          <select class="block w-full mt-1 text-sm border border-slate-950 text-slate-300 border-slate-600 bg-slate-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple focus:shadow-outline-slate rounded-lg" name="{{ form.domain.html_name }}">
+        </label>
+          <select class="block w-full mt-1 text-sm border border-slate-950 text-slate-300 bg-slate-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple focus:shadow-outline-slate rounded-lg" name="{{ form.domain.html_name }}">
             {% for opt in form.domain %}
               {% if opt %}
                 <span>{{ opt }}</span>
               {% endif %}
             {% endfor %}    
           </select>
-        </label>
         <span class="my-2 text-xs text-red-400">
           {{ form.domain.errors }}
         </span>
 
-        <label class="block my-2 text-sm" for="{{ form.title.id_for_label }}">
+        <label class="block my-2 px-2 text-sm" for="{{ form.title.id_for_label }}">
           <span class="text-slate-200">{{ form.title.label }}</span>
+        </label>
           <textarea class="block w-full border mt-1 text-sm text-slate-300 border-slate-950 bg-slate-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple focus:shadow-outline-slate rounded-lg" rows="2" placeholder="Enter Title of Product of Click Get Info" name="{{ form.title.html_name }}" value="{{ form.title.value }}">{% if form.title.value %}{{ form.title.value }}{% endif %}</textarea>
         </label>
         <span class="text-xs text-red-400">
           {{ form.title.errors }}
         </span>
-        <label class="my-2 block text-sm" for="{{ form.price.id_for_label }}">
+        <label class="my-2 block px-2 text-sm" for="{{ form.price.id_for_label }}">
           <span class=" text-slate-200">{{ form.price.label }}</span>
-          <input class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="00.0" value="{% if form.price.value %}{{ form.price.value }}{% endif %}" name="{{ form.price.html_name }}"/>
         </label>
+          <input class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="00.0" value="{% if form.price.value %}{{ form.price.value }}{% endif %}" name="{{ form.price.html_name }}"/>
+        
         <span class="text-xs text-red-400">
           {{ form.price.errors }}
         </span>
-        <label class="my-2 block text-sm" for="{{ form.image_url.id_for_label }}">
+        <label class="my-2 px-2 block text-sm" for="{{ form.image_url.id_for_label }}">
           <span class="text-slate-200">{{ form.image_url.label }}</span>
+        </label>
           <input class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="" value="{% if form.image_url.value %}{{ form.image_url.value }}{% endif %}" name="{{ form.image_url.html_name }}" type='hidden'/>
           <span class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg">{% if form.image_url.value %}{{ form.image_url.value }}{% else %} Click on Get Info to get imageUrl {% endif %}</span>
-        </label>
         <span class="text-xs text-red-400">
           {{ form.image_url.errors }}
         </span>

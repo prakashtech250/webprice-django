@@ -4,14 +4,58 @@
 
 
 {% block content %}
-<div class="container px-6 mx-auto grid">
-    <h4
-      class="text-lg font-semibold text-slate-200"
-    >
-      Settings
-    </h4>
-    <div class="px-4 py-3 my-6 rounded-lg shadow-md bg-slate-800">
-    </div>
+<div class="container px-6 my-4 mx-auto grid">
+  <h2 class="text-lg my-2 font-semibold text-slate-200 justify-self-start">Settings</h2>
+  <div class="px-4 py-3 my-6 rounded-lg shadow-md shadow-slate-950 bg-slate-800">
+    <form method="POST">
+      {% csrf_token %}
+      <label class="my-2 px-2 block text-sm" for="{{ form.discord_webhook_url.id_for_label }}">
+        <span class=" text-slate-200">Discord Webhook Url</span>
+      </label>
+      <input class="block w-full mt-1 text-sm border border-slate-900 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="" value="" name="{{ form.discord_webhook_url.html_name }}"/>
+      <span class="text-xs  text-red-400">
+        {{ form.discord_webhook_url.errors }}
+      </span>
+
+      <p class="mt-4 px-2 block text-sm text-slate-200">How do you prefer to receive notifications?</p>
+      <div class="flex my-2 gap-8">
+        {% for notif in form.notification_preference %}
+        <label class="px-2 text-slate-200" for="{{ notif.id_for_label }}">
+          <input class="rounded-full border border-slate-900 bg-slate-700 mx-2" type="checkbox" id="{{ notif.id_for_label }}" name="{{ notif.data.name }}" value="{{ notif.data.value }}" {% if notif.data.attrs.checked %}checked{% endif %}>{{notif.choice_label}}
+        </label>
+        {% endfor %}
+      </div>
+      <span class="text-xs  text-red-400">
+        {{ form.notification_preference.errors }}
+      </span>
+
+      <label class="block mt-4 text-sm" for="{{ form.currency.id_for_label }}">
+        <span class=" text-slate-200 px-2">Currency</span>
+        <select class="block w-full mt-2 text-sm border border-slate-900 text-slate-300 bg-slate-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple focus:shadow-outline-slate rounded-lg" name="{{ form.currency.html_name }}">
+          {% for opt in form.currency %}
+          {% if opt %}
+            <span>{{ opt }}</span>
+          {% endif %}
+        {% endfor %} 
+        </select>
+      </label>
+      <span class="text-xs  text-red-400">
+        {{ form.currency.errors }}
+      </span>
+
+      <label class="mt-4 px-2 block text-sm" for="{{ form.change_per.id_for_label }}">
+        <span class=" text-slate-200">Change Percentages</span>
+      </label>
+        <input class="block w-full mt-1 text-sm border border-slate-950 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="0" value="{% if form.change_per.value %}{{ form.change_per.value }} {% endif %}" name="{{ form.change_per.html_name }}"/>
+        <span class="text-xs  text-red-400">
+          {{ form.change_per.errors }}
+        </span>
+      <div class="my-4 flex justify-center">
+        <button class="text-md px-4 py-2 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-slate-900 rounded-lg active:bg-purple-600 hover:bg-purple-800 focus:outline-none focus:shadow-outline-purple" type="submit" name='submit'>Save</button>
+      </div>
+
+    </form>
   </div>
+</div>
 
 {% endblock content %}
