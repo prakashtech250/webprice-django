@@ -12,7 +12,12 @@
       <label class="my-2 px-2 block text-sm" for="{{ form.discord_webhook_url.id_for_label }}">
         <span class=" text-slate-200">Discord Webhook Url</span>
       </label>
-      <input class="block w-full mt-1 text-sm border border-slate-900 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="" value="" name="{{ form.discord_webhook_url.html_name }}"/>
+      <input class="block w-full mt-1 text-sm border border-slate-900 bg-slate-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple text-slate-300 focus:shadow-outline-slate form-input rounded-lg" placeholder="" value="{% if form.discord_webhook_url.value %}{{form.discord_webhook_url.value}}{% endif %}" name="{{ form.discord_webhook_url.html_name }}" {% if form.discord_webhook_url.value %}{% endif %}/>
+      {% comment %} {% if not form.discord_webhook_url %} {% endcomment %}
+        <button class="px-2 text-sm text-slate-400" type='submit' name='check'>Check</button>
+      {% comment %} {% else %}
+        <button class="px-2 text-sm text-slate-400" type='submit' name='edit'>Edit</button> {% endcomment %}
+      {% comment %} {% endif %} {% endcomment %}
       <span class="text-xs  text-red-400">
         {{ form.discord_webhook_url.errors }}
       </span>
@@ -57,5 +62,11 @@
     </form>
   </div>
 </div>
+
+<script>
+  document.getElementById("editButton").addEventListener("click", function() {
+    console.log('yes');
+  });
+</script>
 
 {% endblock content %}

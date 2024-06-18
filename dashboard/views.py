@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 
 from .scrapers import get_data
+from .discord_notify import send_notification
 
 
 # Create your views here.
@@ -86,15 +87,28 @@ def settings(request):
     user = request.user
     user_settings = get_object_or_404(UserSettings, user=user)
     if request.method == "POST":
-        form = SettingsForm(request.POST, instance=user_settings)
-        if form.is_valid():
-            new_settings = form.save()
-            new_settings.user = request.user
-            new_settings.save()
-            messages.success(request, 'New Setting is saved.')
+        if 'submit' in request.POST:
+            form = SettingsForm(request.POST, instance=user_settings)
+            if form.is_valid():
+                new_settings = form.save()
+                new_settings.user = request.user
+                new_settings.save()
+                messages.success(request, 'New Setting is saved.')
+                return redirect('settings')
+            else:
+                print('form is not valid')
+        elif 'check' in request.POST:
+            form = SettingsForm(request.POST, instance=user_settings)
+            discord_webhook_url = request.POST.get('discord_webhook_url')
+            notified = send_notification(discord_webhook_url)
+            if notified:
+                messages.success(request, 'Check your discord channel to verify')
+            else:
+                messages.error(request, 'Something wrong. Please check your discord webhook url')
             return redirect('settings')
-        else:
-            print('form is not valid')
+        elif 'edit' in request.POST:
+            messages.error(request, 'Something wrong')
+            return redirect('settings')
     else:
         form = SettingsForm(instance=user_settings)
     return render(request, 'settings.html', {'menus': sidebar_menus, 'form': form})
