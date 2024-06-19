@@ -65,17 +65,21 @@
             </li>
             {% endfor %}
           </ul>
+          <hr class='my-4 mx-2 border border-slate-400'></hr>
         </div>
-          {% comment %} <div class="px-6 my-6">
-            <a href="{% url "account_signup" %}">
-            <button
-              class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-            >
-              Create account
-              <span class="ml-2" aria-hidden="true">+</span>
-            </button>
-          </a>
-          </div> {% endcomment %}
+
+        </div>
+        <div class='mx-2 mt-8'>
+          <a href="{% url 'account_logout' %}">
+          <button class="w-full bg-purple-600 hover:bg-purple-800 border border-slate-900 text-slate-200 px-2 py-2 rounded-lg shadow-md shadow-slate-900">
+            <span class="mx-2">
+              {% icon "logout" %}
+            </span>
+            <span>
+              Logout
+            </span>
+          </button>
+        </a>
         </div>
       </aside>
       <!-- Mobile sidebar -->
@@ -138,8 +142,8 @@
           </div> {% endcomment %}
         </div>
       </aside>
-      <div class="flex flex-col flex-1">
-        <header class="py-4 shadow-xs shadow-slate-950 bg-slate-800">
+      <div class="flex flex-col flex-1 p-1">
+        <header class="py-2 shadow-xs shadow-slate-950 bg-slate-800">
           <div
             class="container flex items-center justify-between h-full px-6 mx-auto text-purple-300"
           >

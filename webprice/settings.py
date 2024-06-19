@@ -168,9 +168,11 @@ DJANGO_ICONS = {
         "user": {"name": "fa-solid fa-user"},
         "google": {"name": "fa-brands fa-google"},
         "bell": {"name": "fa-solid fa-bell"},
+        "notifications": {"name": "fa-solid fa-bell"},
         "search": {"name": "fa-solid fa-magnifying-glass"},
         "eye": {"name": "fa-solid fa-eye"},
         "eye-slash": {"name": "fa-solid fa-eye-slash"},
+        "logout": {"name": "fa-solid fa-right-from-bracket"}
     },
 }
 

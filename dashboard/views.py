@@ -16,6 +16,7 @@ sidebar_menus = [
     ('Dashboard','dashboard','/dashboard/'),
     ('Add Product','add-product','/dashboard/add-product/'),
     ('View','view-products','/dashboard/view-products/'),
+    ('Notifications', 'notifications','/dashboard/notifications/'),
     ('Profile', 'profile','/dashboard/profile/'),
     ('Settings', 'settings', '/dashboard/settings/'),
 ]
@@ -160,4 +161,8 @@ def delete_product(request, pk):
         product.delete()
         messages.success(request, f'{product.asin} is deleted.')
     return redirect('view-products')
+
+@login_required
+def notifications(request):
+    return render(request, 'notifications.html', {"menus": sidebar_menus})
 
