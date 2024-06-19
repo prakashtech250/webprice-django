@@ -22,14 +22,9 @@
     <!-- Include your icon library. This example uses Font Awesome 6 through cdnjs.  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      
-    <!-- JavaScript -->
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
-    <!-- Default theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/toastr.css' %}" media="all">
+    <script type="text/javascript" src="{% static 'js/toastr.js' %}"></script>  
     {% tailwind_css %}
   </head>
   <body>
@@ -356,19 +351,22 @@
           {% block content %}blank{% endblock content %}
         </main>
 
-        <script>
-          {% for alertMsg in messages %}
-            alertify.set('notifier','position', 'top-right');
-            {% if alertMsg.tags == 'alert-success' %}
-              alertify.success('{{alertMsg}}');
-            {% elif alertMsg.tags == 'alert-danger' %}
-              alertify.error('{{alertMsg}}');
-              {% endif %}
-          {% endfor %}
-
-        </script>
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'alert-success'%}
+                <script type=text/javascript>toastr.success('{{ message }}')</script>
+            {% elif message.tags == 'alert-info' %}
+                <script type=text/javascript>toastr.info('{{ message }}')</script>
+            {% elif message.tags == 'alert-warning' %}
+                <script type=text/javascript>toastr.warning('{{ message }}')</script>
+            {% elif message.tags == 'alert-danger' %}
+                <script type=text/javascript>toastr.error('{{ message }}')</script>
+            {% endif %}
+        {% endfor %}
+      {% endif %}
 
       </div>
     </div>
+ 
   </body>
 </html>

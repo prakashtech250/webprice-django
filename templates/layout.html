@@ -18,6 +18,10 @@
       defer
     ></script>
     <script src="{% static "js/init-alpine.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/toastr.css' %}" media="all">
+    <script type="text/javascript" src="{% static 'js/toastr.js' %}"></script>  
     {% tailwind_css %}
   </head>
 
@@ -29,5 +33,18 @@
         {% block content %}This is content{% endblock content %}
     </div>
   </div>
+  {% if messages %}
+  {% for message in messages %}
+      {% if message.tags == 'alert-success'%}
+          <script type=text/javascript>toastr.success('{{ message }}')</script>
+      {% elif message.tags == 'alert-info' %}
+          <script type=text/javascript>toastr.info('{{ message }}')</script>
+      {% elif message.tags == 'alert-warning' %}
+          <script type=text/javascript>toastr.warning('{{ message }}')</script>
+      {% elif message.tags == 'alert-danger' %}
+          <script type=text/javascript>toastr.error('{{ message }}')</script>
+      {% endif %}
+  {% endfor %}
+{% endif %}
 	</body>
 </html>
