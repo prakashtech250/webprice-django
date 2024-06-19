@@ -3,6 +3,11 @@ from bs4 import BeautifulSoup
 from rich import print
 from datetime import datetime, date, timedelta
 import time
+from dotenv import load_dotenv
+import psycopg2
+import os
+
+load_dotenv()
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -22,7 +27,26 @@ USER_AGENTS = [
             'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0',
         ]
 
+def connect_database():
+    conn = psycopg2.connect(database = os.getenv('PGNAME'), 
+                            user = os.getenv('PGUSER'), 
+                            host= os.getenv('PGHOST'),
+                            password = os.getenv('PGPASS'),
+                            port = os.getenv('PGPORT'))
+    return conn
+
+def get_products(conn):
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM dashboard_productsdb')
+    return cur.fetchall()
+
+
 def main():
+    conn = connect_database()
+    products = get_products(conn)
+    for product in products:
+        print(product)
+
     pass
 
 if __name__=="__main__":
