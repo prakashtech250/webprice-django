@@ -75,7 +75,6 @@ def viewProducts(request): #
     for p in all_products:
         domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
         p['domain'] = domain_url.replace('https://www.','').strip()
-        print(p)
     paginator = Paginator(all_products, 50)
 
     page_number = request.GET.get("page")
@@ -106,12 +105,18 @@ def settings(request):
         elif 'check' in request.POST:
             form = SettingsForm(request.POST, instance=user_settings)
             discord_webhook_url = request.POST.get('discord_webhook_url')
-            notified = send_notification(discord_webhook_url)
-            if notified:
-                messages.success(request, 'Check your discord channel to verify')
+            if discord_webhook_url:
+                if form.is_valid():
+                    notified = send_notification(discord_webhook_url)
+                    if notified:
+                        messages.success(request, 'Check your discord channel to verify')
+                    else:
+                        messages.error(request, 'Something wrong. Please check your discord webhook url')
+                    return redirect('settings')
+                else:
+                    messages.error(request, 'Webhook url is not valid')
             else:
-                messages.error(request, 'Something wrong. Please check your discord webhook url')
-            return redirect('settings')
+                messages.error(request, 'Please enter discord webhook url')
         elif 'edit' in request.POST:
             messages.error(request, 'Something wrong')
             return redirect('settings')
