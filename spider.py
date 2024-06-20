@@ -43,7 +43,7 @@ def get_UA():
     return result
 
 def request_via_proxy(url):
-    client = ScrapingBeeClient(api_key='U4VI5JPENFLM3LED4CIYZKDGA94F8QLW21B2CKLHL8ZCY1ST99BADVODB4ZUQIPCJUTRJA9BIQVEFF93')
+    client = ScrapingBeeClient(api_key=os.getenv('SCRAPING_BEE'))
     response = client.get(url)
     print_info(f'[Proxy] Url: {url}, Status: {response.status_code}')
     return response

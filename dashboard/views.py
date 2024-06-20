@@ -23,7 +23,7 @@ sidebar_menus = [
 
 @login_required
 def dashboard(request):
-    all_products = ProductsDB.objects.filter()
+    all_products = ProductsDB.objects.filter(user=request.user.id)
     totalProducts = len(all_products)
     return render(request, 'index1.html', {'menus': sidebar_menus, 'totalProducts': totalProducts})
 
@@ -71,7 +71,8 @@ def addProduct(request):
 @login_required
 def viewProducts(request): #
     # all_products = ProductsDB.objects.filter(user=request.user.id)
-    all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
+    # all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
+    all_products = ProductsDB.objects.filter().order_by('-date_added').values()
     for p in all_products:
         domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
         p['domain'] = domain_url.replace('https://www.','').strip()
