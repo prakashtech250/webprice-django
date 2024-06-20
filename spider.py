@@ -10,7 +10,7 @@ import random
 import re
 from scrapingbee import ScrapingBeeClient
 import calendar
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlencode, unquote
 
 load_dotenv()
 
@@ -53,8 +53,10 @@ def _requests(url):
     authority = url.replace('https://','').split('/')[0]
     HEADERS['Authority'] = authority
     while True:
-        try:
+        # try:
+        if 1:
             HEADERS['User-Agent'] = get_UA()
+            print(url)
             response = httpx.get(url, headers=HEADERS)
             if response.status_code == 200:
                 print_info(f'Url: {url}, Status: {response.status_code}')
@@ -68,9 +70,9 @@ def _requests(url):
                 time.sleep(randtime)
                 if 'add.html' not in url:
                     break
-        except Exception as e:
-            print(f'Error [REQUEST]: {e}', 0)
-            time.sleep(5)
+        # except Exception as e:
+        #     print(f'Error [REQUEST]: {e}', 0)
+        #     time.sleep(5)
     return response
 
 def _soup(response):
@@ -239,8 +241,8 @@ def _details(product):
 def details_via_cart(product):
     asin = product['asin']
     domain_url = product['domain_url']
-    cart_url = urljoin(domain_url,f'/gp/aws/cart/add.html?ASIN.1={asin}')
-    
+    cart_url = urljoin(domain_url,f'/gp/aws/cart/add.html?&ASIN.1={asin}')
+    cart_url = unquote(cart_url).replace('\u200e', '')
     response = _requests(cart_url)
     # response = request_via_proxy(cart_url)
     if response:

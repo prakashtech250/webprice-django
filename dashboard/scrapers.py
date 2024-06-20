@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
+from urllib.parse import urljoin, unquote
 import re
 import time
 import os
@@ -90,6 +90,7 @@ def float_price(price_text):
 def get_data(asin, domain):
     domain_url = f"{domain}"
     product_url = urljoin(domain_url,f'/gp/aws/cart/add.html?ASIN.1={asin}')
+    product_url = unquote(product_url).replace('\u200e', '')
     response = _requests(product_url)
     if response:
         soup = _soup(response)

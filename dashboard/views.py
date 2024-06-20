@@ -54,7 +54,6 @@ def addProduct(request):
                 domain_id = request.POST.get('domain').lower()
                 domain = CurrencyRate.objects.get(id=domain_id).domain_url
                 if asin and domain:
-                    product_info = {'asin': asin, 'title': 'this is some random title', 'price': 2.1}
                     product_info = get_data(asin, domain)
                     if product_info:
                         form = ProductForm(initial=product_info, user=request.user)
