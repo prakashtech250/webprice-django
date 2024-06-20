@@ -35,18 +35,43 @@ def connect_database():
                             port = os.getenv('PGPORT'))
     return conn
 
+def get_domains(conn):
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM dashboard_currencyrate')
+    results = cur.fetchall()
+    columns = [desc[0] for desc in cur.description]
+    results_dict = []
+    for row in results:
+        row_dict = dict(zip(columns, row))
+        results_dict.append(row_dict)
+    return results_dict
+
+
 def get_products(conn):
     cur = conn.cursor()
     cur.execute('SELECT * FROM dashboard_productsdb')
-    return cur.fetchall()
+    results = cur.fetchall()
+    columns = [desc[0] for desc in cur.description]
+    results_dict = []
+    for row in results:
+        row_dict = dict(zip(columns, row))
+        results_dict.append(row_dict)
+    return results_dict
 
+def get_domainUrl(productId, domains_dict):
+    domain_url = None
+    for domain_dict in domains_dict:
+        if productId == domain_dict['id']:
+            domain_url =  domain_dict['domain_url']
+    return domain_url
 
 def main():
     conn = connect_database()
+    domains_dict = get_domains(conn)
     products = get_products(conn)
     for product in products:
+        product['domain_url'] = get_domainUrl(product['domain_id'], domains_dict)
         print(product)
-
     pass
 
 if __name__=="__main__":

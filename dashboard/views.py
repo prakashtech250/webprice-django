@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ProductsDB, UserSettings
+from .models import ProductsDB, UserSettings, CurrencyRate
 from .forms import ProductForm, SettingsForm
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -30,7 +30,7 @@ def dashboard(request):
 @login_required
 def addProduct(request):
     if request.method == "POST":
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, user=request.user)
         if 'submit' in request.POST:
             if form.is_valid():
                 product = form.save(commit=False)
@@ -49,28 +49,33 @@ def addProduct(request):
             else:
                 messages.error(request, 'Something went wrong while adding product.')
         elif 'get_info' in request.POST:
-            asin = request.POST.get('asin')
-            domain = request.POST.get('domain').lower()
-            if asin and domain:
-                product_info = {'asin': asin, 'title': 'this is some random title', 'price': 2.1}
-                product_info = get_data(asin, domain)
-                if product_info:
-                    form = ProductForm(initial=product_info)
-                    messages.success(request, 'Product information retrieved successfully.')
+            if form.is_valid():
+                asin = request.POST.get('asin')
+                domain_id = request.POST.get('domain').lower()
+                domain = CurrencyRate.objects.get(id=domain_id).domain_url
+                if asin and domain:
+                    product_info = {'asin': asin, 'title': 'this is some random title', 'price': 2.1}
+                    product_info = get_data(asin, domain)
+                    if product_info:
+                        form = ProductForm(initial=product_info, user=request.user)
+                        messages.success(request, 'Product information retrieved successfully.')
+                    else:
+                        messages.error(request, 'Failed to retrieve product information. Please check the ASIN and country code.')
                 else:
-                    messages.error(request, 'Failed to retrieve product information. Please check the ASIN and country code.')
-            else:
-                messages.error(request, 'ASIN and country are required to get product information.')
-                
+                    messages.error(request, 'ASIN and country are required to get product information.')
+                    
     else:
-        form = ProductForm()
+        form = ProductForm(user=request.user)
     return render(request, 'add-product.html', {'menus': sidebar_menus, 'form': form})
 
 @login_required
-def viewProducts(request):
+def viewProducts(request): #
     # all_products = ProductsDB.objects.filter(user=request.user.id)
     all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
-    # all_products = ProductsDB.objects.all()
+    for p in all_products:
+        domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
+        p['domain'] = domain_url.replace('https://www.','').strip()
+        print(p)
     paginator = Paginator(all_products, 50)
 
     page_number = request.GET.get("page")

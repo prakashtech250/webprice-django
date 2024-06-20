@@ -88,7 +88,7 @@ def float_price(price_text):
     return price, currency
 
 def get_data(asin, domain):
-    domain_url = f"https://www.amazon.{domain}"
+    domain_url = f"{domain}"
     product_url = urljoin(domain_url,f'/gp/aws/cart/add.html?ASIN.1={asin}')
     response = _requests(product_url)
     if response:
