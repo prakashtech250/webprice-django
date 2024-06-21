@@ -53,10 +53,8 @@ def _requests(url):
     authority = url.replace('https://','').split('/')[0]
     HEADERS['Authority'] = authority
     while True:
-        # try:
-        if 1:
+        try:
             HEADERS['User-Agent'] = get_UA()
-            print(url)
             response = httpx.get(url, headers=HEADERS)
             if response.status_code == 200:
                 print_info(f'Url: {url}, Status: {response.status_code}')
@@ -70,9 +68,9 @@ def _requests(url):
                 time.sleep(randtime)
                 if 'add.html' not in url:
                     break
-        # except Exception as e:
-        #     print(f'Error [REQUEST]: {e}', 0)
-        #     time.sleep(5)
+        except Exception as e:
+            print(f'Error [REQUEST]: {e}', 0)
+            time.sleep(5)
     return response
 
 def _soup(response):

@@ -61,22 +61,26 @@ def _soup(response):
     return BeautifulSoup(response.text, 'html.parser')
 
 def float_price(price_text):
-    pattern0 = r"\d+\,\d+"
-    pattern1 = r"\d+\.\d+"
+    pattern0 = r"\d+\,\d{2}"
+    pattern1 = r"\d+\.\d{2}"
     pattern2 = r"\d+"
+    pattern = r"[\d,]+\.\d{2}|\d+\,\d{2}|\d+\.\d{2}|\d+"
     currency_pattern = r"[^\d,.]+"
     found0 = re.search(pattern0, price_text)
     found1 = re.search(pattern1, price_text)
     found2 = re.search(pattern2, price_text)
+    found = re.search(pattern, price_text.replace(',',''))
     currency_found = re.search(currency_pattern, price_text)
-    if found0:
-        price = found0.group(0).replace(',','.')
-    elif found1:
-        price = found1.group(0)
-    elif found2:
-        price = found2.group(0)
-    else:
-        price = 0
+    # if found0:
+    #     price = found0.group(0).replace(',','.')
+    # elif found1:
+    #     price = found1.group(0)
+    # elif found2:
+    #     price = found2.group(0)
+    # else:
+    #     price = 0
+    if found:
+        price = found.group(0)
     try:
         price = int(price)
     except:
@@ -102,7 +106,7 @@ def get_data(asin, domain):
             price_text = price.get_text().strip()
             price, currency = float_price(price_text)
         else:
-            price = 0
+            price, currency = 0, None
         imageUrl = soup.select_one('.sc-product-link img')
         if imageUrl:
             imageUrl = imageUrl.get('src')
@@ -110,9 +114,10 @@ def get_data(asin, domain):
             'asin': asin,
             'title': title,
             'price': price,
-            'image_url': imageUrl
+            'image_url': imageUrl,
+            'currency': currency,
         }
-        # print(imageUrl)
+        print(info)
         return info
     else:
         return None

@@ -55,10 +55,12 @@ def addProduct(request):
                 domain = CurrencyRate.objects.get(id=domain_id).domain_url
                 if asin and domain:
                     product_info = get_data(asin, domain)
+                    product_info['domain'] = domain_id
                     if product_info:
                         form = ProductForm(initial=product_info, user=request.user)
                         messages.success(request, 'Product information retrieved successfully.')
                     else:
+                        form = ProductForm(user=request.user)
                         messages.error(request, 'Failed to retrieve product information. Please check the ASIN and country code.')
                 else:
                     messages.error(request, 'ASIN and country are required to get product information.')
