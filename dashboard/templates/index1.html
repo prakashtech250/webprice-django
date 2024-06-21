@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% load icons %}
 {% block title %}
   Dashboard
@@ -14,53 +14,101 @@
         <p>Welcome, new user. Please log in.</p>
       {% endif %}
     </h2>
+
     <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
       <!-- Card -->
       <a href="{% url 'view-products' %}">
-        <div class="flex items-center p-4  rounded-lg shadow-slate-950 shadow-md bg-slate-800">
+        <div class="flex items-center p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
           <div class="h-11 w-11 p-3 mr-4 rounded-full text-orange-100 bg-orange-500">
             {% icon 'group' %}
           </div>
           <div>
             <p class="mb-2 text-sm font-medium text-slate-200">Total Products</p>
-            <p class="text-lg font-semibold text-slate-200">{{ totalProducts }}</p>
+            <p class="text-lg font-semibold text-slate-200">{{ all_products|length }}</p>
           </div>
         </div>
       </a>
       <!-- Card -->
-      <div class="flex items-center p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
-        <div class="p-3 mr-4 rounded-full text-green-100 bg-green-500">
-          <div class="w-5 h-5 flex justify-center p-1">{% icon "bell" %}</div>
+      <a href="{% url 'notifications' %}">
+        <div class="flex items-center p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
+          <div class="p-3 mr-4 rounded-full text-green-100 bg-green-500">
+            <div class="w-5 h-5 flex justify-center p-1">
+              {% icon 'bell' %}
+            </div>
+          </div>
+          <div>
+            <p class="mb-2 text-sm font-medium text-slate-200">Notifications</p>
+            <p class="text-lg font-semibold text-slate-200">1</p>
+          </div>
         </div>
-        <div>
-          <p class="mb-2 text-sm font-medium text-slate-200">Notifications</p>
-          <p class="text-lg font-semibold  text-slate-200">1</p>
-        </div>
-      </div>
+      </a>
       <!-- Card -->
-      <div class="flex items-center p-4  rounded-lg shadow-slate-950 shadow-md bg-slate-800">
-        <div class="p-3 mr-4 rounded-full text-blue-100 bg-blue-500">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path>
-          </svg>
+      <a href="{% url 'add-product' %}">
+        <div class="flex items-center h-full p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
+          <div class="p-3 mr-4 rounded-full text-blue-100 bg-blue-500">
+            <div class="w-5 h-5 flex justify-center p-1">
+            {% icon 'add-product' %}
+            </div>
+          </div>
+          <div>
+            <p class="mb-2 text-sm font-medium text-slate-200">Add New</p>
+            <p class="text-lg font-semibold text-slate-200"></p>
+          </div>
         </div>
-        <div>
-          <p class="mb-2 text-sm font-medium text-slate-200">New sales</p>
-          <p class="text-lg font-semibold text-slate-200">376</p>
-        </div>
-      </div>
+      </a>
       <!-- Card -->
-      <div class="flex items-center p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
-        <div class="p-3 mr-4 rounded-full text-teal-100 bg-teal-500">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"></path>
-          </svg>
+      <a href="{% url 'settings' %}">
+        <div class="flex items-center h-full p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
+          <div class="p-3 mr-4 rounded-full text-blue-100 bg-teal-500">
+            <div class="w-5 h-5 flex justify-center p-1">
+            {% icon 'settings' %}
+            </div>
+          </div>
+          <div>
+            <p class="mb-2 text-sm font-medium text-slate-200">Settings</p>
+            <p class="text-lg font-semibold text-slate-200 hidden"></p>
+          </div>
         </div>
-        <div>
-          <p class="mb-2 text-sm font-medium text-slate-200">Pending contacts</p>
-          <p class="text-lg font-semibold text-slate-200">35</p>
-        </div>
-      </div>
+      </a>
     </div>
+    <div class="my-2 w-full overflow-hidden rounded-lg shadow-md shadow-slate-950 border border-slate-950">
+      <div class="w-full overflow-x-auto">
+      <table class="w-full whitespace-no-wrap">
+        <thead>
+          <tr class="text-xs font-semibold tracking-wide text-left  uppercase border-b border-slate-700 text-slate-200 bg-slate-800">
+            <th class="px-3 py-3">Title</th>
+            <th class="px-3 py-3">Price</th>
+            <th class="px-3 py-3">Domain</th>
+            <th class="px-3 py-3">Last Checked</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-700 bg-slate-800">
+          {% for product in all_products|slice:":5" %}
+            <tr class="text-slate-200">
+              <td class="px-3 py-2">
+                <div class="flex items-center text-sm">
+                  <!-- Avatar with inset shadow -->
+                  <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
+                    <img class="object-cover w-full h-full rounded-md" src="{% if product.image_url %}{{product.image_url}}{% else %}{% static 'img/default-product.png' %}{% endif %}" alt="Image of {{product.asin}}" loading="lazy" />
+                    <div class="absolute inset-0 rounded-full" aria-hidden="true"></div>
+                  </div>
+                  <div>
+                    <p class="font-semibold">{{ product.asin }}</p>
+                    <p class="text-xs text-slate-200">{{ product.title }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-3 py-3 text-sm">{{ product.price }}</td>
+              <td class="px-3 py-3 text-sm">{{ product.domain }}</td>
+              <td class="px-3 py-3 text-sm">{{ product.last_checked }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+    </div>
+
+
   </div>
 {% endblock %}

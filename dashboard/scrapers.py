@@ -110,6 +110,7 @@ def get_data(asin, domain):
         imageUrl = soup.select_one('.sc-product-link img')
         if imageUrl:
             imageUrl = imageUrl.get('src')
+        
         info = {
             'asin': asin,
             'title': title,

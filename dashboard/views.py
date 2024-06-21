@@ -23,9 +23,11 @@ sidebar_menus = [
 
 @login_required
 def dashboard(request):
-    all_products = ProductsDB.objects.filter(user=request.user.id)
-    totalProducts = len(all_products)
-    return render(request, 'index1.html', {'menus': sidebar_menus, 'totalProducts': totalProducts})
+    all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
+    for p in all_products:
+        domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
+        p['domain'] = domain_url.replace('https://www.','').strip()
+    return render(request, 'index1.html', {'menus': sidebar_menus, 'all_products': all_products})
 
 @login_required
 def addProduct(request):
@@ -58,7 +60,10 @@ def addProduct(request):
                     product_info['domain'] = domain_id
                     if product_info:
                         form = ProductForm(initial=product_info, user=request.user)
-                        messages.success(request, 'Product information retrieved successfully.')
+                        if product_info['title'] or product_info['price'] or product_info['image_url']:
+                            messages.success(request, 'Product information retrieved successfully.')
+                        else:
+                            messages.info(request, 'Product might be out of stock. Submit this product if you want to get notified')
                     else:
                         form = ProductForm(user=request.user)
                         messages.error(request, 'Failed to retrieve product information. Please check the ASIN and country code.')
@@ -71,9 +76,7 @@ def addProduct(request):
 
 @login_required
 def viewProducts(request): #
-    # all_products = ProductsDB.objects.filter(user=request.user.id)
-    # all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
-    all_products = ProductsDB.objects.filter().order_by('-date_added').values()
+    all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
     for p in all_products:
         domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
         p['domain'] = domain_url.replace('https://www.','').strip()

@@ -25,7 +25,7 @@ class ProductsDB(models.Model):
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=500)
+    title = models.CharField(max_length=500, blank=True, null=True)
     asin = models.CharField(max_length=12)
     # domain = models.CharField(max_length=3, choices=COUNTRY_CHOICES, default='COM')
     domain = models.ForeignKey(CurrencyRate, on_delete=models.SET_NULL, null=True)
@@ -72,4 +72,4 @@ class UserSettings(models.Model):
 
     def __str__(self):
         return f'{self.user.username} settings'
-    
+

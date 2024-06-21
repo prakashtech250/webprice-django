@@ -32,6 +32,8 @@ USER_AGENTS = [
             'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0',
         ]
 USE_PROXY = False
+PRODUCT_TABLE = 'dashboard_productsdb'
+CURRENCY_TABLE = 'dashboard_currencyrate'
 
 def get_UA():
     result = random.choice(USER_AGENTS)
@@ -64,13 +66,14 @@ def _requests(url):
                 return None 
             else:
                 print_info(f'Url: {url}, Status: {response.status_code}', 0)
-                randtime = random.randint(5,10)
+                randtime = random.randint(1,10)
                 time.sleep(randtime)
                 if 'add.html' not in url:
                     break
         except Exception as e:
             print(f'Error [REQUEST]: {e}', 0)
-            time.sleep(5)
+            randtime = random.randint(1,10)
+            time.sleep(randtime)
     return response
 
 def _soup(response):
@@ -95,9 +98,8 @@ def connect_database():
                             port = os.getenv('PGPORT'))
     return conn
 
-def get_domains(conn):
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM dashboard_currencyrate')
+def get_domains(cur):
+    cur.execute(f'SELECT * FROM {CURRENCY_TABLE}')
     results = cur.fetchall()
     columns = [desc[0] for desc in cur.description]
     results_dict = []
@@ -106,8 +108,7 @@ def get_domains(conn):
         results_dict.append(row_dict)
     return results_dict
 
-def get_products(conn):
-    cur = conn.cursor()
+def get_products(cur):
     cur.execute('SELECT * FROM dashboard_productsdb')
     results = cur.fetchall()
     columns = [desc[0] for desc in cur.description]
@@ -125,15 +126,20 @@ def get_domainUrl(productId, domains_dict):
     return domain_url
 
 def float_price(price_text):
-    pattern0 = r"\d+\,\d+"
-    pattern1 = r"\d+\.\d+"
+    # price_text = '27,234.23'
+    pattern0 = r"\d+\,\d{2}"
+    pattern1 = r"\d+\.\d{2}"
     pattern2 = r"\d+"
+    pattern = r"[\d,]+\.\d{2}|\d+\,\d{2}|\d+\.\d{2}|\d+"
     currency_pattern = r"[^\d,.]+"
     found0 = re.search(pattern0, price_text)
     found1 = re.search(pattern1, price_text)
     found2 = re.search(pattern2, price_text)
+    found = re.search(pattern, price_text.replace(',',''))
     currency_found = re.search(currency_pattern, price_text)
-    if found0:
+    if ',' in price_text and '.' in price_text and found:
+        price = found.group(0)
+    elif found0:
         price = found0.group(0).replace(',','.')
     elif found1:
         price = found1.group(0)
@@ -141,6 +147,8 @@ def float_price(price_text):
         price = found2.group(0)
     else:
         price = 0
+    # if found:
+    #     price = found.group(0)
     try:
         price = int(price)
     except:
@@ -272,15 +280,61 @@ def details_via_cart(product):
         info = None
     return info
 
+def update_data(cur, product, info):
+    try:
+        record_id = product['id']
+        last_title = product['title']
+        last_price = product['price']
+        last_image = product['image_url']
+        
+        new_title = info['title']
+        new_price = info['price']
+        new_image = info['image_url']
+
+        select_query = f"""
+        SELECT title, price, last_checked_price, image_url 
+        FROM {PRODUCT_TABLE}
+        WHERE id = %s;
+        """
+        cur.execute(select_query, (record_id,))
+        current_details = cur.fetchone()
+        if current_details:
+            update_query = f"""
+            UPDATE {PRODUCT_TABLE}
+            SET price = %s,
+                last_checked_price = %s,
+                title = %s,
+                image_url = %s
+            WHERE id = %s;
+            """
+
+            cur.execute(update_query, (
+                new_price, 
+                last_price, 
+                new_title, 
+                new_image, 
+                record_id
+            ))
+            print_info(f"Record with ID {record_id} has been updated.")
+        else:
+            print_info(f"No record found with ID {record_id}.")
+    except Exception as e:
+        print_info(f"Error while updating data in PostgreSQL: {e}", 0)
+
 def main():
     conn = connect_database()
-    domains_dict = get_domains(conn)
-    products = get_products(conn)
+    cur = conn.cursor()
+    domains_dict = get_domains(cur)
+    products = get_products(cur)
     for product in products:
         product['domain_url'] = get_domainUrl(product['domain_id'], domains_dict)
         info = details_via_cart(product)
-        print(info)
-        # break
+        update_data(cur, product, info)
+        conn.commit()
+    if conn:
+        cur.close()
+        conn.close()
+        print_info("PostgreSQL connection is closed")
     pass
 
 if __name__=="__main__":
