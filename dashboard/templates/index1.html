@@ -30,7 +30,7 @@
       </a>
       <!-- Card -->
       <a href="{% url 'notifications' %}">
-        <div class="flex items-center p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
+        <div class="flex items-center h-full p-4 rounded-lg shadow-slate-950 shadow-md bg-slate-800">
           <div class="p-3 mr-4 rounded-full text-green-100 bg-green-500">
             <div class="w-5 h-5 flex justify-center p-1">
               {% icon 'bell' %}
@@ -38,7 +38,7 @@
           </div>
           <div>
             <p class="mb-2 text-sm font-medium text-slate-200">Notifications</p>
-            <p class="text-lg font-semibold text-slate-200">1</p>
+            <p class="text-lg font-semibold text-slate-200">{% if unread_notification %}{{ unread_notification|length }}{% endif %}</p>
           </div>
         </div>
       </a>

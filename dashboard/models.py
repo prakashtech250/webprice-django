@@ -72,4 +72,27 @@ class UserSettings(models.Model):
 
     def __str__(self):
         return f'{self.user.username} settings'
+    
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = (
+        ('price_increase', 'Price Increase'),
+        ('price_decrease', 'Price Decrease'),
+        ('in_stock', 'In Stock'),
+        ('out_of_stock', 'Out of Stock'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    product = models.ForeignKey(ProductsDB, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'Notification for {self.user.username}: {self.message[:20]}...'
+
+    class Meta:
+        ordering = ['-created_at']
 

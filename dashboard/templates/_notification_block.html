@@ -1,0 +1,29 @@
+{% load icons %}
+
+{% for product in notifications %}
+  <a href="{% url 'mark_as_read' product.id %}" class="flex border-slate-950 bg-slate-800 rounded-lg my-2 py-2 hover:shadow-lg shadow-sm shadow-slate-950 {% if product.is_read %}opacity-50{% endif %}">
+    <span class="text-lg font-semibold px-4 py-2 text-slate-200">
+      {% if product.notification_type == "price_increase" %}
+        <div class="text-green-600">
+          {% icon "up" %}
+        </div>
+      {% elif product.notification_type == "price_decrease" %}
+        <div class="text-red-600">
+          {% icon "down" %}
+        </div>
+      {% elif product.notification_type == "in_stock" %}
+        <div class="text-blue-600">
+          {% icon "check" %}
+        </div>
+      {% elif product.notification_type == "out_of_stock" %}
+        <div class="text-gray-600">
+          {% icon "cross" %}
+        </div>
+      {% endif %}
+    </span>
+    <div class='px-2'>
+      <div class="text-sm font-semibold text-slate-200">{{ product.product.asin }}</div>
+      <div class="text-sm text-slate-400">{{ product.message }}</div>
+    </div>
+  </a>
+{% endfor %}

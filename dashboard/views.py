@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import ProductsDB, UserSettings, CurrencyRate
+from .models import ProductsDB, UserSettings, CurrencyRate, Notification
 from .forms import ProductForm, SettingsForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from datetime import timedelta
+from django.utils import timezone
 
 from .scrapers import get_data
 from .discord_notify import send_notification
@@ -24,10 +26,11 @@ sidebar_menus = [
 @login_required
 def dashboard(request):
     all_products = ProductsDB.objects.filter(user=request.user).order_by('-date_added').values()
+    unread_notification = Notification.objects.filter(is_read=False).values()
     for p in all_products:
         domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
         p['domain'] = domain_url.replace('https://www.','').strip()
-    return render(request, 'index1.html', {'menus': sidebar_menus, 'all_products': all_products})
+    return render(request, 'index1.html', {'menus': sidebar_menus, 'all_products': all_products, "unread_notification": unread_notification})
 
 @login_required
 def addProduct(request):
@@ -179,5 +182,39 @@ def delete_product(request, pk):
 
 @login_required
 def notifications(request):
-    return render(request, 'notifications.html', {"menus": sidebar_menus})
+    today = timezone.now().date()
+    yesterday = today - timedelta(days=1)
+    last_week = today - timedelta(days=7)
+    last_month = today - timedelta(days=30)
+
+    notifications = request.user.notifications.all()
+
+    today_notifications = notifications.filter(created_at__date=today, user=request.user)
+    yesterday_notifications = notifications.filter(created_at__date=yesterday, user=request.user)
+    last_week_notifications = notifications.filter(created_at__date__gte=last_week, created_at__date__lt=yesterday, user=request.user)
+    last_month_notifications = notifications.filter(created_at__date__gte=last_month, created_at__date__lt=last_week, user=request.user)
+    older_notifications = notifications.filter(created_at__date__lt=last_month, user= request.user)
+
+    context = {
+        "menus": sidebar_menus,
+        'today_notifications': today_notifications,
+        'yesterday_notifications': yesterday_notifications,
+        'last_week_notifications': last_week_notifications,
+        'last_month_notifications': last_month_notifications,
+        'older_notifications': older_notifications,
+    }
+    return render(request, 'notifications.html', context)
+
+@login_required
+def mark_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+    notification.is_read = True
+    notification.save()
+    return redirect('notifications')
+
+@login_required
+def mark_all_as_read(request):
+    unread_notifications = request.user.notifications.filter(is_read=False)
+    unread_notifications.update(is_read=True)
+    return redirect('notification_list')
 

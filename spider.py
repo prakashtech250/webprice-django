@@ -233,7 +233,7 @@ def _details(product):
             price_text = price_div.find(class_='a-offscreen')
             if price_text:
                 price_text = price_text.get_text().strip()
-                price, currency = float_price(price_text)
+                price, currency = convert_price_format(price_text)
                 delivery_block = soup.find(id="deliveryBlockMessage")
                 if delivery_block:
                     delivery_text = delivery_block.find(class_='a-text-bold')

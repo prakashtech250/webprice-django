@@ -11,7 +11,9 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('notifications/', views.notifications, name="notifications"),
     path('product/<int:pk>/edit/', views.update_product, name='update_product'),
-    path('product/<int:pk>/delete/', views.delete_product, name='delete_product')
+    path('product/<int:pk>/delete/', views.delete_product, name='delete_product'),
+    path('mark_as_read/<int:notification_id>/', views.mark_as_read, name='mark_as_read'),
+    path('notifications/mark_all_as_read/', views.mark_all_as_read, name='mark_all_as_read'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

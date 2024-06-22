@@ -172,7 +172,11 @@ DJANGO_ICONS = {
         "search": {"name": "fa-solid fa-magnifying-glass"},
         "eye": {"name": "fa-solid fa-eye"},
         "eye-slash": {"name": "fa-solid fa-eye-slash"},
-        "logout": {"name": "fa-solid fa-right-from-bracket"}
+        "logout": {"name": "fa-solid fa-right-from-bracket"},
+        "up": {"name": "fa-solid fa-caret-up"},
+        "down": {"name": "fa-solid fa-caret-down"},
+        "cross": {"name": "fa-solid fa-xmark"},
+        "check": {"name": "fa-solid fa-check"}
     },
 }
 
