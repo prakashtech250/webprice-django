@@ -125,39 +125,56 @@ def get_domainUrl(productId, domains_dict):
             domain_url =  domain_dict['domain_url']
     return domain_url
 
-def float_price(price_text):
-    # price_text = '27,234.23'
-    pattern0 = r"\d+\,\d{2}"
-    pattern1 = r"\d+\.\d{2}"
-    pattern2 = r"\d+"
-    pattern = r"[\d,]+\.\d{2}|\d+\,\d{2}|\d+\.\d{2}|\d+"
-    currency_pattern = r"[^\d,.]+"
-    found0 = re.search(pattern0, price_text)
-    found1 = re.search(pattern1, price_text)
-    found2 = re.search(pattern2, price_text)
-    found = re.search(pattern, price_text.replace(',',''))
-    currency_found = re.search(currency_pattern, price_text)
-    if ',' in price_text and '.' in price_text and found:
-        price = found.group(0)
-    elif found0:
-        price = found0.group(0).replace(',','.')
-    elif found1:
-        price = found1.group(0)
-    elif found2:
-        price = found2.group(0)
+def convert_price_format(price_str):
+    # Remove any whitespace around the price string
+    price_str = price_str.strip()
+
+    # Regular expressions for detecting currency symbols
+    currency_pattern = re.compile(r'^(?P<currency>[^\d]+)?(?P<price>[\d,.]+)(?P<currency2>[^\d]+)?$')
+    match = currency_pattern.match(price_str)
+    
+    if not match:
+        raise ValueError("The price format is not recognized")
+
+    currency = match.group('currency') if match.group('currency') else match.group('currency2')
+    price = match.group('price')
+
+    # Check the last three characters to determine the format
+    if len(price) >= 3:
+        last_char = price[-1]
+        second_last_char = price[-2]
+        third_last_char = price[-3]
+        
+        # Check if the second last character is a dot or a comma
+        if second_last_char == '.' and last_char.isdigit():
+            # Price is already in dot format, e.g., 19.95
+            return currency, price
+        elif second_last_char == ',' and last_char.isdigit():
+            # Price is in comma format, e.g., 19,95
+            return currency, price.replace(',', '.')
+        elif ',' in price and '.' in price:
+            # Determine which one is used as the decimal separator by looking at the last three characters
+            if price.rfind(',') > price.rfind('.'):
+                # The comma is likely used as the decimal separator
+                return currency, price.replace('.', '').replace(',', '.')
+            else:
+                # The dot is likely used as the decimal separator
+                return currency, price.replace(',', '')
+
+    # Regular expressions to match the common formats
+    comma_format = re.compile(r'^\d{1,3}(,\d{3})*,\d{2}$')
+    dot_format = re.compile(r'^\d{1,3}(\.\d{3})*\.\d{2}$')
+
+    # Check if the price is in comma format
+    if comma_format.match(price):
+        converted_price = price.replace(',', '.')
+        return converted_price, price
+    
+    # Check if the price is already in dot format
+    elif dot_format.match(price):
+        return currency, price
     else:
-        price = 0
-    # if found:
-    #     price = found.group(0)
-    try:
-        price = int(price)
-    except:
-        price = float(price)
-    if currency_found:
-        currency = currency_found.group(0).strip()
-    else:
-        currency = ''
-    return price, currency
+        return None, 0
 
 def get_delivery_dates(delivery_text):
     delivery_text = delivery_text.lower()
