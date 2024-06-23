@@ -93,6 +93,4 @@ class Notification(models.Model):
     def __str__(self):
         return f'Notification for {self.user.username}: {self.message[:20]}...'
 
-    class Meta:
-        ordering = ['-created_at']
 

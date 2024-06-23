@@ -276,7 +276,7 @@ def details_via_cart(product):
         price = soup.find(class_='sc-product-price')
         if price:
             price_text = price.get_text().strip()
-            price, currency = float_price(price_text)
+            price, currency = convert_price_format(price_text)
         else:
             price, currency = 0, None
         if price:
