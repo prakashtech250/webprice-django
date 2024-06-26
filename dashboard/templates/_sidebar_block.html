@@ -1,0 +1,39 @@
+{% load icons %}
+
+<div class="py-4 text-slate-200">
+  <a
+    class="flex justify-center text-3xl antialiased font-bold text-slate-200 text-center"
+    href="{% url 'dashboard' %}"
+  >
+    Web<span class="text-purple-800">Price</span>
+  </a>
+  <div class="mt-4">
+  <ul class="mt-8">
+    {% for menu, menuUrl, menuPath in menus %}
+    <li class="relative mx-4 my-2 p-2 rounded-lg  {% if menuPath == request.path %}bg-purple-600 hover:bg-purple-700 shadow-sm shadow-slate-950 {% else %} hover:bg-slate-700 {% endif %}">
+      <a
+        class="inline-flex w-full text-sm font-semibold transition-colors duration-150 text-slate-200"
+        href="{% url menuUrl %}"
+      >
+        <span class='px-4'>{% icon menuUrl %}</span>
+        <span class="px-4">{{ menu }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <hr class='my-4 mx-2 border border-slate-400'></hr>
+</div>
+
+</div>
+  <div class='mx-4 mt-auto'>
+    <a href="{% url 'account_logout' %}">
+    <button class="py-2 w-full border-2 border-purple-800 hover:bg-slate-950 text-slate-200 text-sm rounded-lg shadow-md hover:shadow-slate-950 bg-slate-950">
+      <span>
+        {% icon "logout" %}
+      </span>
+      <span class='px-1'>
+        Logout
+      </span>
+    </button>
+    </a>
+  </div> 

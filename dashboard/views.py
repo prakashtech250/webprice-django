@@ -30,7 +30,7 @@ def dashboard(request):
     for p in all_products:
         domain_url = CurrencyRate.objects.get(id=p['domain_id']).domain_url
         p['domain'] = domain_url.replace('https://www.','').strip()
-    return render(request, 'index1.html', {'menus': sidebar_menus, 'all_products': all_products, "unread_notification": unread_notification})
+    return render(request, 'index1.html', {'menus': sidebar_menus, 'all_products': all_products})
 
 @login_required
 def addProduct(request):

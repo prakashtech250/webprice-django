@@ -34,48 +34,9 @@
     >
       <!-- Desktop sidebar -->
       <aside
-        class="z-20 hidden w-64 overflow-y-auto bg-slate-800 md:block flex-shrink-0"
+      class="z-20 hidden w-64 overflow-y-auto bg-slate-800 md:block flex-shrink-0"
       >
-        <div class="py-4 text-slate-300">
-          <a
-            class="ml-6 text-lg font-bold text-slate-200"
-            href="{% url 'dashboard' %}"
-          >
-            Webprice
-          </a>
-          <div class="mt-4">
-          <ul class="mt-8">
-            {% for menu, menuUrl, menuPath in menus %}
-            <li class="relative px-6 py-3">
-              {% if menuPath == request.path %}
-              <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
-              {% endif %}
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-slate-200"
-                href="{% url menuUrl %}"
-              >
-              <span>{% icon menuUrl %}</span>
-                <span class="ml-4">{{ menu }}</span>
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-          <hr class='my-4 mx-2 border border-slate-400'></hr>
-        </div>
-
-        </div>
-          <div class='mx-2 mt-auto'>
-            <a href="{% url 'account_logout' %}">
-            <button class="w-full bg-purple-600 hover:bg-purple-800 border border-slate-900 text-slate-200 px-2 py-2 rounded-lg shadow-md shadow-slate-900">
-              <span class="mx-2">
-                {% icon "logout" %}
-              </span>
-              <span>
-                Logout
-              </span>
-            </button>
-            </a>
-          </div> 
+      {% include "_sidebar_block.html" with menus=sidebar_menus %}
       </aside>
       <!-- Mobile sidebar -->
       <!-- Backdrop -->
@@ -101,41 +62,7 @@
         @click.away="closeSideMenu"
         @keydown.escape="closeSideMenu"
       >
-        <div class="py-4 text-slate-200">
-          <a
-            class="ml-6 text-lg font-bold text-slate-200"
-            href="#"
-          >
-            Webprice
-          </a>
-          <div class="mt-4">
-          <ul>
-            {% for menu, menuUrl, menuPath in menus %}
-            <li class="relative px-6 py-3">
-              {% if menuPath == request.path %}
-              <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
-              {% endif %}
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-slate-200"
-                href="{% url menuUrl %}"
-                <span>{% icon menuUrl %}</span>
-                <span class="ml-4">{{ menu }}</span>
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-          {% comment %} <div class="px-6 my-6">
-            <a href="{% url "account_signup" %}">
-            <button
-              class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-            >
-              Create account
-              <span class="ml-2" aria-hidden="true">+</span>
-            </button>
-          </a>
-          </div> {% endcomment %}
-        </div>
+      {% include "_sidebar_block.html" with menus=sidebar_menus %}
       </aside>
       <div class="flex flex-col flex-1 p-1">
         <header class="py-2 shadow-xs shadow-slate-950 bg-slate-800">
