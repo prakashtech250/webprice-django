@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'django_icons',
     'allauth',
     'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google',
+    'djmoney',
+    
     ]
 
 MIDDLEWARE = [
