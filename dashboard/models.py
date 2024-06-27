@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
-from djmoney.models.fields import MoneyField
 
 # Create your models here.
 class CurrencyRate(models.Model):
@@ -30,9 +29,9 @@ class ProductsDB(models.Model):
     asin = models.CharField(max_length=12)
     # domain = models.CharField(max_length=3, choices=COUNTRY_CHOICES, default='COM')
     domain = models.ForeignKey(CurrencyRate, on_delete=models.SET_NULL, null=True)
-    price = MoneyField(max_digits=14, decimal_places=2, null=True, blank=True, default_currency='USD')
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=200, blank=True, null=True)
-    last_checked_price =MoneyField(max_digits=14, decimal_places=2, null=True, blank=True, default_currency='USD')
+    last_checked_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     last_checked = models.DateTimeField(auto_now=True)
     date_added = models.DateTimeField(default=timezone.now)
 
