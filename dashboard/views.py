@@ -216,5 +216,5 @@ def mark_as_read(request, notification_id):
 def mark_all_as_read(request):
     unread_notifications = request.user.notifications.filter(is_read=False)
     unread_notifications.update(is_read=True)
-    return redirect('notification_list')
+    return redirect('notifications')
 

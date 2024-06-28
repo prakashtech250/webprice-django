@@ -139,16 +139,13 @@
                     aria-label="submenu"
                   >
                   {% if unread_notification %}
-                  {% for notification in unread_notification %}
-                    <li class="flex px-2">
-                      <span class='flex justify-start text-sm'>{{ notification.message }}</span>
-                      <span class='flex text-xs justify-end'>3 min ago</span>
-                    </li>
-                  {% endfor %}
+                  {% include '_notification_block.html' with notifications=unread_notification|slice:":5" %}
+                  <div class='flex justify-between px-2'>
+                    <a class='text-xs' href={% url 'notifications' %}>View More</a>
+                    <a class='text-xs' href={% url 'mark_all_as_read' %}>Mark all as seen</a>
+                  </div>
                   {% else %}
-                    <li>
-                      <p>No new Notification</p>
-                    </li>
+                  <p class="text-md text-slate-400 text-center">No new Notifications</p>
                   {% endif %}
                   </ul>
                 </template>

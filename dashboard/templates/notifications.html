@@ -4,41 +4,45 @@
 
 {% block content %}
 <div class="container px-6 my-4 mx-auto grid">
-  <h2 class="text-lg my-2 font-semibold text-slate-200 justify-self-start px-2">Notifications</h2>
-  <div class="my-2">
-    {% if today_notifications %}
-      <h4 class="text-md text-slate-400 px-2">Today</h4>
-      {% include '_notification_block.html' with notifications=today_notifications %}
-    {% endif %}
+  <div class='flex justify-between'>
+    <h2 class="text-lg my-2 font-semibold text-slate-200 justify-self-start px-2">Notifications</h2>
+    <a class='text-sm m-2 text-slate-400' href={% url 'mark_all_as_read' %}>Mark all as seen</a>
   </div>
+  {% if today_notifications %}
+  <div class="my-2">
+    <h4 class="text-md text-slate-400 px-2">Today</h4>
+    {% include '_notification_block.html' with notifications=today_notifications %}
+  </div>
+  {% endif %}
+ 
+  {% if yesterday_notifications %}
+  <div class="my-2">
+    <h4 class="text-md text-slate-400 px-2">Yesterday</h4>
+    {% include '_notification_block.html' with notifications=yesterday_notifications %}
+  </div>
+  {% endif %}
+  
+  {% if last_week_notifications %}
+  <div class="my-2">
+    <h4 class="text-md text-slate-400 px-2">Last Week</h4>
+    {% include '_notification_block.html' with notifications=last_week_notifications %}
+  </div>
+  {% endif %}
+  
+  {% if last_month_notifications %}
+  <div class="my-2">
+    <h4 class="text-md text-slate-400 px-2">Last Month</h4>
+    {% include '_notification_block.html' with notifications=last_month_notifications %}
+  </div>
+  {% endif %}
 
+  {% if older_notifications %}
   <div class="my-2">
-    {% if yesterday_notifications %}
-      <h4 class="text-md text-slate-400 px-2">Yesterday</h4>
-      {% include '_notification_block.html' with notifications=yesterday_notifications %}
-    {% endif %}
+    <h4 class="text-md text-slate-400 px-2">Older</h4>
+    {% include '_notification_block.html' with notifications=older_notifications %}
   </div>
-
-  <div class="my-2">
-    {% if last_week_notifications %}
-      <h4 class="text-md text-slate-400 px-2">Last Week</h4>
-      {% include '_notification_block.html' with notifications=last_week_notifications %}
-    {% endif %}
-  </div>
-
-  <div class="my-2">
-    {% if last_month_notifications %}
-      <h4 class="text-md text-slate-400 px-2">Last Month</h4>
-      {% include '_notification_block.html' with notifications=last_month_notifications %}
-    {% endif %}
-  </div>
-
-  <div class="my-2">
-    {% if older_notifications %}
-      <h4 class="text-md text-slate-400 px-2">Older</h4>
-      {% include '_notification_block.html' with notifications=older_notifications %}
-    {% endif %}
-  </div>
+  {% endif %}
+  
 </div>
 
 {% endblock content %}

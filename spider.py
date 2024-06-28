@@ -129,14 +129,15 @@ def convert_price_format(price_str):
     # Remove any whitespace around the price string
     price_str = price_str.strip()
 
-    # Regular expressions for detecting currency symbols
-    currency_pattern = re.compile(r'^(?P<currency>[^\d]+)?(?P<price>[\d,.]+)(?P<currency2>[^\d]+)?$')
+    # Regular expression for detecting currency symbols and price
+    currency_pattern = re.compile(r'^(?P<currency>[^\d.,]+)?\s?(?P<price>[\d,\.]+)(?P<currency2>[^\d.,]+)?$')
     match = currency_pattern.match(price_str)
     
     if not match:
         raise ValueError("The price format is not recognized")
 
     currency = match.group('currency') if match.group('currency') else match.group('currency2')
+    currency = currency.replace('\xa0', '').strip()
     price = match.group('price')
 
     # Check the last three characters to determine the format
@@ -168,7 +169,7 @@ def convert_price_format(price_str):
     # Check if the price is in comma format
     if comma_format.match(price):
         converted_price = price.replace(',', '.')
-        return converted_price, price
+        return currency, converted_price
     
     # Check if the price is already in dot format
     elif dot_format.match(price):
@@ -233,7 +234,7 @@ def _details(product):
             price_text = price_div.find(class_='a-offscreen')
             if price_text:
                 price_text = price_text.get_text().strip()
-                price, currency = convert_price_format(price_text)
+                currency, price = convert_price_format(price_text)
                 delivery_block = soup.find(id="deliveryBlockMessage")
                 if delivery_block:
                     delivery_text = delivery_block.find(class_='a-text-bold')
@@ -276,9 +277,9 @@ def details_via_cart(product):
         price = soup.find(class_='sc-product-price')
         if price:
             price_text = price.get_text().strip()
-            price, currency = convert_price_format(price_text)
+            currency, price = convert_price_format(price_text)
         else:
-            price, currency = 0, None
+            currency, price = 0, None
         if price:
             availability = 'YES'
         else:
@@ -293,6 +294,7 @@ def details_via_cart(product):
         info['currency'] = currency
         info['image_url'] = imageUrl
         info['availability'] = availability
+        print(info)
     else:
         info = None
     return info

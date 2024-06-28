@@ -28,6 +28,7 @@ class ProductsDB(models.Model):
     title = models.CharField(max_length=500, blank=True, null=True)
     asin = models.CharField(max_length=12)
     # domain = models.CharField(max_length=3, choices=COUNTRY_CHOICES, default='COM')
+    is_stock = models.BooleanField(default=False)
     domain = models.ForeignKey(CurrencyRate, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=200, blank=True, null=True)

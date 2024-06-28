@@ -5,7 +5,7 @@ from .models import UserSettings, NotificationPreference, CurrencyRate, Notifica
 # Register your models here.
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ('asin', 'title', 'price', 'last_checked_price' ,'domain','user','last_checked')
+    list_display = ('asin', 'title', 'price', 'last_checked_price', 'is_stock','domain','user','last_checked')
     search_fields = ('asin', 'user')
 
 class SettingsAdmin(admin.ModelAdmin):

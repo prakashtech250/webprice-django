@@ -33,7 +33,7 @@
                 <td class="px-3 py-2">
                   <div class="flex items-center text-sm">
                     <!-- Avatar with inset shadow -->
-                    <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
+                    <div class="relative hidden h-8 w-8 mr-3 rounded-full md:block">
                       <img class="object-cover w-full h-full rounded-md" src="{% if product.image_url %}{{product.image_url}}{% else %}{% static 'img/default-product.png' %}{% endif %}" alt="Image of {{product.asin}}" loading="lazy" />
                       <div class="absolute inset-0 rounded-full" aria-hidden="true"></div>
                     </div>
