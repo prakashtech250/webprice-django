@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_icons',
     'allauth',
     'allauth.account',
+    'whitenoise.runserver_nostatic',
     ]
 
 MIDDLEWARE = [
@@ -59,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'webprice.urls'
@@ -221,3 +224,4 @@ ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 TIME_ZONE = 'Asia/Kathmandu'
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

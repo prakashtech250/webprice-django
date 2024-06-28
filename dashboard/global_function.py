@@ -1,4 +1,3 @@
-from .models import Notification
 
 def notifications(request):
     notifications = request.user.notifications.all()
