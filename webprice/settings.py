@@ -224,4 +224,5 @@ ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
 
 TIME_ZONE = 'Asia/Kathmandu'
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
