@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-k59g*za)_)q*z+8c#mwk^mpentj3v9te=5ws@4k))ht(_$i#_=
 DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1','localhost','.now.sh','webprice-django-production.up.railway.app','https://webprice-django-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['webprice-django-production.up.railway.app','https://webprice-django-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://webprice-django-production.up.railway.app']
 
 # Application definition
 
