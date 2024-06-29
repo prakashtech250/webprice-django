@@ -192,7 +192,7 @@ def notifications(request):
     last_week = today - timedelta(days=7)
     last_month = today - timedelta(days=30)
 
-    notifications = request.user.notifications.all()
+    notifications = request.user.notifications.all().order_by('-created_at')
 
     today_notifications = notifications.filter(created_at__date=today, user=request.user)
     yesterday_notifications = notifications.filter(created_at__date=yesterday, user=request.user)
