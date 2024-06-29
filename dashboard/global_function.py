@@ -1,7 +1,10 @@
+from .models import Notification
 
 def notifications(request):
-    notifications = request.user.notifications.all()
-    unread_notification = notifications.filter(is_read=False, user=request.user)
+    try:
+        unread_notification = Notification.objects.filter(user=request.user).values()
+    except:
+        unread_notification = []
     return {
         'unread_notification': unread_notification
     }
