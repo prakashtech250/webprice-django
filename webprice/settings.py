@@ -30,8 +30,8 @@ SECRET_KEY = 'django-insecure-k59g*za)_)q*z+8c#mwk^mpentj3v9te=5ws@4k))ht(_$i#_=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1','localhost','.now.sh','webprice.railway.internal','https://webprice.railway.internal']
-CSRF_TRUSTED_ORIGIN = ['.vercel.app', '127.0.0.1','localhost','.now.sh','webprice.railway.internal','https://webprice.railway.internal']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1','localhost','.now.sh','webprice-django-production.up.railway.app','https://webprice-django-production.up.railway.app']
+CSRF_TRUSTED_ORIGIN = ['.vercel.app', '127.0.0.1','localhost','.now.sh','webprice-django-production.up.railway.app','https://webprice-django-production.up.railway.app']
 
 # Application definition
 
