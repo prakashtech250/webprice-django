@@ -15,16 +15,23 @@ class ProductForm(forms.ModelForm):
     title = forms.CharField(required=False, max_length=255, label='Title')
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super(ProductForm, self).__init__(*args, **kwargs)
-        
-        print(f"User in Form: {user}")  # Debugging line to check user in form
-        if user:
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if self.user:
             try:
-                user_settings = UserSettings.objects.get(user=user)
+                user_settings = UserSettings.objects.get(user=self.user)
                 self.fields['domain'].initial = user_settings.currency
             except UserSettings.DoesNotExist:
                 pass
+
+    def save(self, commit=True):
+        product = super().save(commit=False)
+        if self.user:
+            product.user = self.user
+        if commit:
+            product.save()
+        return product
 
 
 class SettingsForm(forms.ModelForm):

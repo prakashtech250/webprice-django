@@ -136,6 +136,7 @@ def settings(request):
 @login_required
 def update_product(request, pk):
     product = get_object_or_404(ProductsDB, id=pk)
+    print('product found:', product)
     if product:
         if request.method == 'POST':
             print('post method')
@@ -150,20 +151,24 @@ def update_product(request, pk):
                 else:
                     messages.error(request, 'Form is not valid')
             elif 'get_info' in request.POST:
-                asin = request.POST.get('asin')
-                domain = request.POST.get('domain').lower()
-                if asin and domain:
-                    product_info = {'asin': asin, 'title': 'this is some random title', 'price': 2.1}
-                    product_info = get_data(asin, domain)
-                    if product_info:
-                        form = ProductForm(initial=product_info)
-                        messages.success(request, 'Product information retrieved successfully.')
+                if form.is_valid():
+                    asin = request.POST.get('asin')
+                    domain_id = form.cleaned_data['domain'].id
+                    domain = CurrencyRate.objects.get(id=domain_id)
+                    domain_url = domain.domain_url
+                    if asin and domain:
+                        product_info = get_data(asin, domain_url)
+                        product_info['domain'] = domain
+                        if product_info:
+                            form = ProductForm(initial=product_info)
+                            messages.success(request, 'Product information retrieved successfully.')
+                        else:
+                            messages.error(request, 'Failed to retrieve product information. Please check the ASIN and country code.')
                     else:
-                        messages.error(request, 'Failed to retrieve product information. Please check the ASIN and country code.')
+                        messages.error(request, 'ASIN and country are required to get product information.')
                 else:
-                    messages.error(request, 'ASIN and country are required to get product information.')
+                    messages.error(request, 'Form is not valid')
         else:
-            print('get method')
             form = ProductForm(instance=product)
             # print(form.asin)
     else:

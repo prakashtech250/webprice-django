@@ -139,6 +139,7 @@ def get_data(asin, domain):
             'price': price,
             'image_url': imageUrl,
             'currency': currency,
+            'domain': domain
         }
         print(info)
         return info

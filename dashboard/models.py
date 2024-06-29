@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 # Create your models here.
 class CurrencyRate(models.Model):
@@ -28,7 +30,7 @@ class ProductsDB(models.Model):
     title = models.CharField(max_length=500, blank=True, null=True)
     asin = models.CharField(max_length=12)
     # domain = models.CharField(max_length=3, choices=COUNTRY_CHOICES, default='COM')
-    is_stock = models.BooleanField(default=False)
+    in_stock = models.BooleanField(default=False)
     domain = models.ForeignKey(CurrencyRate, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image_url = models.URLField(max_length=200, blank=True, null=True)
@@ -93,5 +95,44 @@ class Notification(models.Model):
 
     def __str__(self):
         return f'Notification for {self.user.username}: {self.message[:20]}...'
+    
+@receiver(pre_save, sender=ProductsDB)
+def product_pre_update(sender, instance, **kwargs):
+    try:
+        old_instance = sender.objects.get(pk=instance.pk)
+    except sender.DoesNotExist:
+        old_instance = None
+
+    if old_instance:
+        if instance.price > old_instance.price:
+            notification_type = 'price_increase'
+            message = f"The price has increased from {old_instance.price} to {instance.price}."
+        elif instance.price < old_instance.price:
+            notification_type = 'price_decrease'
+            message = f"The price has decreased from {old_instance.price} to {instance.price}."
+        elif instance.in_stock and not old_instance.in_stock:
+            notification_type = 'in_stock'
+            message = f"Product is now back in stock."
+        elif not instance.in_stock and old_instance.in_stock:
+            notification_type = 'out_of_stock'
+            message = f"Product is out of stock."
+
+        # Create notification logic
+        if notification_type and message:
+            Notification.objects.create(
+                user=instance.user,
+                product=instance,
+                notification_type=notification_type,
+                message=message
+            )
+
+
+def create_notification(user, product, notification_type, message):
+    Notification.objects.create(
+        user=user,
+        product=product,
+        notification_type=notification_type,
+        message=message
+    )
 
 
