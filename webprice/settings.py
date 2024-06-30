@@ -179,12 +179,14 @@ DJANGO_ICONS = {
         "up": {"name": "fa-solid fa-caret-up"},
         "down": {"name": "fa-solid fa-caret-down"},
         "cross": {"name": "fa-solid fa-xmark"},
-        "check": {"name": "fa-solid fa-check"}
+        "check": {"name": "fa-solid fa-check"},
+        "import-products": {"name": "fa-solid fa-file-import"},
+        "down-arrow": {"name": "fa-solid fa-down-long"},
     },
 }
 
 # Redirect URLs after login/logout
-LOGIN_REDIRECT_URL = 'dashboard'  # Redirect to your desired view after login
+LOGIN_REDIRECT_URL = 'dashboard'  # Redirect to your desired view after login"name
 LOGOUT_REDIRECT_URL = 'account_login'  # Redirect to login view after logout
 
 

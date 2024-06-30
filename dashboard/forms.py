@@ -52,4 +52,13 @@ class SettingsForm(forms.ModelForm):
         fields = ['notification_preference', 'discord_webhook_url', 'currency', 'change_per']
 
 
+class CSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label='Select a CSV file',
+        help_text='Upload a CSV file containing product data.',
+        widget=forms.FileInput(attrs={'accept': '.csv'})
+    )
+
+
+
 

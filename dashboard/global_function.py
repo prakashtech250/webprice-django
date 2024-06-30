@@ -13,6 +13,7 @@ def sidebar_menus(request):
     sidebar_menus = [
         ('Dashboard','dashboard','/dashboard/'),
         ('Add Product','add-product','/dashboard/add-product/'),
+        ('Import Products', 'import-products','/dashboard/import-products/'),
         ('View','view-products','/dashboard/view-products/'),
         ('Notifications', 'notifications','/dashboard/notifications/'),
         ('Profile', 'profile','/dashboard/profile/'),

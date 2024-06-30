@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load icons %}
+{% block title %}
+  Import Products
+{% endblock %}
+
+{% block content %}
+<div class="container px-6 my-12 mx-auto grid">
+    <div class="mx-auto w-5/6 p-6 bg-slate-800 rounded-md shadow-lg">
+        <h2 class="text-3xl font-semibold text-center mb-6 text-white">Add Products Via CSV</h2>
+        <form method="post" enctype="multipart/form-data" id="csvUploadForm">
+            {% csrf_token %}
+            <div class="relative border-2 border-dashed border-slate-600 rounded-md px-6 py-8 text-center">
+                <input type="file" name="csv_file" class="hidden" id="fileInput" accept=".csv">
+                <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l-4 4m0 0l-4-4m4 4V3"></path>
+                </svg>
+                <p class="text-sm text-slate-400">Drag & Drop your files here or <label for="fileInput" class="cursor-pointer text-purple-500 hover:underline">browse</label> to upload.</p>
+            </div>
+            <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-md w-full mt-6 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 dark:bg-purple-500 dark:hover:bg-purple-600 dark:focus:ring-purple-500 dark:focus:ring-opacity-50">Import</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = fileInput.files[0].name;
+        } else {
+            fileNameDisplay.textContent = '';
+        }
+    });
+
+    // Optionally, handle drag-and-drop functionality
+    const dropArea = fileInput.closest('.relative');
+    
+    dropArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropArea.classList.add('border-purple-500');
+    });
+
+    dropArea.addEventListener('dragleave', () => {
+        dropArea.classList.remove('border-purple-500');
+    });
+
+    dropArea.addEventListener('drop', (event) => {
+        event.preventDefault();
+        fileInput.files = event.dataTransfer.files;
+        fileInput.dispatchEvent(new Event('change'));
+        dropArea.classList.remove('border-purple-500');
+    });
+</script>
+{% endblock %}
+
+ 

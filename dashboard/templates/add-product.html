@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load icons %}
 
 {% block title %}
   Add Product
@@ -7,7 +8,14 @@
 
 {% block content %}
   <div class="container px-6 my-4 mx-auto grid">
-    <h4 class="text-lg my-2 font-semibold text-slate-300">Add Products</h4>
+    <div class='flex justify-between'>
+      <h4 class="text-lg m-2 font-semibold text-slate-300">Add Products</h4>
+      <div class="text-lg m-2 text-slate-200">
+        <a href='{% url "import-csv" %}'>
+        {% icon 'import-products' %}
+        </a>
+      </div>
+    </div>
     <div class="px-4 py-2 my-2 rounded-lg shadow-md shadow-slate-950 bg-slate-800">
       <form method="POST">
         {% csrf_token %}

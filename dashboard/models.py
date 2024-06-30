@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from .utils import send_email
 import os
 from dotenv import load_dotenv
+from .discord_notify import send_notification
 
 load_dotenv()
 
@@ -108,6 +109,7 @@ def product_pre_update(sender, instance, **kwargs):
     except sender.DoesNotExist:
         old_instance = None
 
+    
     if old_instance:
         if instance.price > old_instance.price:
             notification_type = 'price_increase'
@@ -131,12 +133,21 @@ def product_pre_update(sender, instance, **kwargs):
                 message=message
             )
 
-            send_email(
-                subject='Product Update Notification',
-                message = message,
-                from_email=os.getenv('EMAIL_USER'),
-                recipient_list=[instance.user.email],
-            )
+            user_settings = UserSettings.objects.filter(user=instance.user).first()
+            if user_settings:
+                preferences = user_settings.notification_preference.all()
+                if preferences.filter(type='email').exists():
+                    print('send_email')
+                    # send_email(
+                    #     subject='Product Update Notification',
+                    #     message = message,
+                    #     from_email=os.getenv('EMAIL_USER'),
+                    #     recipient_list=[instance.user.email],
+                    # )
+                if preferences.filter(type='discord').exists():
+                    print('send_discord notification')
+
+            # send_notification(webhook=None)
 
 
 

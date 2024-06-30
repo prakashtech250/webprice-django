@@ -6,6 +6,7 @@ from django.conf import settings
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('add-product/', views.addProduct, name='add-product'),
+    path('import-products/', views.import_products, name='import-products'),
     path('view-products/', views.viewProducts, name='view-products'),
     path('profile/', views.profile, name='profile'),
     path('settings/', views.settings, name='settings'),

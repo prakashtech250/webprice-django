@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import ProductsDB, UserSettings, CurrencyRate, Notification
-from .forms import ProductForm, SettingsForm
+from .forms import ProductForm, SettingsForm, CSVUploadForm
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -10,6 +10,8 @@ from django.utils import timezone
 
 from .scrapers import get_data
 from .discord_notify import send_notification
+import pandas as pd
+from io import StringIO
 
 
 # Create your views here.
@@ -224,4 +226,45 @@ def mark_all_as_read(request):
     unread_notifications = request.user.notifications.filter(is_read=False)
     unread_notifications.update(is_read=True)
     return redirect('notifications')
+
+@login_required
+def import_products(request):
+    if request.method == "POST":
+        form = CSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['csv_file']
+            csv_data = StringIO(csv_file.read().decode('utf-8'))
+            df = pd.read_csv(csv_data)
+
+            success_count = 0
+            error_count = 0
+            for _, row in df.iterrows():
+                data = {
+                    'asin': row.get('asin'),
+                    'domain': row.get('domain'),
+                    'title': row.get('title'),
+                    'price': row.get('price'),
+                    'image_url': row.get('image_url'),
+                }
+
+                product_form = ProductForm(data=data, user=request.user)
+                if product_form.is_valid():
+                    product = product_form.save(commit=False)
+                    product.user = request.user
+                    product.save()
+                    success_count += 1
+                else:
+                    error_count += 1
+
+            if success_count > 0:
+                messages.success(request, f"Successfully imported {success_count} products.")
+            if error_count > 0:
+                messages.error(request, f"Failed to import {error_count} products.")
+                
+            return redirect('import-products')
+        else:
+            messages.error(request, "Failed to import products.")
+    else:
+        form = CSVUploadForm()
+    return render(request, 'import-products.html', {'form': form})
 
