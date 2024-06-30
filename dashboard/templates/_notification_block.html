@@ -1,7 +1,7 @@
 {% load icons %}
 
 {% for product in notifications %}
-  <a href="{% url 'mark_as_read' product.id %}" class="flex border-slate-950 bg-slate-800 rounded-lg my-2 py-2 {% if product.is_read %}opacity-50{% endif %}">
+  <a href="{% url 'mark_as_read' product.id %}" class="flex border-slate-950 bg-slate-800 rounded-lg my-2 py-2 {% if product.is_read %}opacity-50{% else %}shadow-md shadow-slate-900{% endif %}">
     <span class="text-lg font-semibold px-4 py-1 text-slate-200">
       {% if product.notification_type == "price_increase" %}
         <div class="text-green-600">

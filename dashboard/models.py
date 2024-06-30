@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from .utils import send_email
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Create your models here.
 class CurrencyRate(models.Model):
@@ -125,6 +130,15 @@ def product_pre_update(sender, instance, **kwargs):
                 notification_type=notification_type,
                 message=message
             )
+
+            send_email(
+                subject='Product Update Notification',
+                message = message,
+                from_email=os.getenv('EMAIL_USER'),
+                recipient_list=[instance.user.email],
+            )
+
+
 
 
 def create_notification(user, product, notification_type, message):

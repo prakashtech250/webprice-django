@@ -50,7 +50,7 @@ def send_notification(webhook, msg=default_msg,info=default_info):
         webhook = DiscordWebhook(url=webhook, rate_limit_retry=True)
         embed = DiscordEmbed(title=title, url=url ,color='03b2f8')
         embed.set_thumbnail(url=image)
-        embed.set_author(name="prakash", url="")
+        embed.set_author(name="webprice", url="")
         embed.set_timestamp()
         embed.add_embed_field(name='Status', value=msg, inline=False)
         embed.add_embed_field(name='ASIN', value=asin, inline=True)

@@ -115,12 +115,14 @@ def settings(request):
             discord_webhook_url = request.POST.get('discord_webhook_url')
             if discord_webhook_url:
                 if form.is_valid():
+                    userSettings = dict()
+                    userSettings['discord_webhook_url'] = discord_webhook_url
+                    form = SettingsForm(initial=userSettings)
                     notified = send_notification(discord_webhook_url)
                     if notified:
                         messages.success(request, 'Check your discord channel to verify')
                     else:
                         messages.error(request, 'Something wrong. Please check your discord webhook url')
-                    return redirect('settings')
                 else:
                     messages.error(request, 'Webhook url is not valid')
             else:

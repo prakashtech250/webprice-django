@@ -6,6 +6,7 @@ import time
 import os
 from dotenv import load_dotenv
 import random
+from .models import CurrencyRate
 
 load_dotenv()
 API = os.getenv('SCRAPER_API')
