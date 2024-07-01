@@ -7,6 +7,8 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from datetime import timedelta
 from django.utils import timezone
+from django.conf import settings as sett
+import pytz
 
 from .scrapers import get_data
 from .discord_notify import send_notification
@@ -191,13 +193,14 @@ def delete_product(request, pk):
 
 @login_required
 def notifications(request):
-    today = timezone.now().date()
+    tz = pytz.timezone(sett.TIME_ZONE)
+    now = timezone.now().astimezone(tz)
+    today = now.date()
     yesterday = today - timedelta(days=1)
     last_week = today - timedelta(days=7)
     last_month = today - timedelta(days=30)
 
-    notifications = request.user.notifications.all().order_by('-timestamp')
-
+    notifications = request.user.notifications.all().order_by('-created_at')
     today_notifications = notifications.filter(created_at__date=today, user=request.user)
     yesterday_notifications = notifications.filter(created_at__date=yesterday, user=request.user)
     last_week_notifications = notifications.filter(created_at__date__gte=last_week, created_at__date__lt=yesterday, user=request.user)
