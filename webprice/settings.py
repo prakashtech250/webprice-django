@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'whitenoise.runserver_nostatic',
+    'django.contrib.humanize'
     ]
 
 MIDDLEWARE = [
