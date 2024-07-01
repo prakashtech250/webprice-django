@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {% for product in notifications %}
-  <a href="{% url 'mark_as_read' product.id %}" class="flex border-slate-950 bg-slate-800 rounded-lg my-2 py-2 {% if product.is_read %}opacity-50{% else %}shadow-md shadow-slate-900{% endif %}">
+  <a href="{% url 'mark_as_read' product.id %}" class="flex items-center border-slate-950 bg-slate-800 rounded-lg my-2 p-2 {% if product.is_read %}{% else %}shadow-md shadow-slate-900{% endif %}">
     <span class="text-lg font-semibold px-4 text-slate-200">
       {% if product.notification_type == "price_increase" %}
         <div class="text-green-600">
@@ -22,10 +22,12 @@
         </div>
       {% endif %}
     </span>
-    <div class='px-2'>
-      <div class="text-sm font-semibold text-slate-200">{{ product.product.asin }}</div>
-      <div class="text-sm text-slate-400">{{ product.message }}</div>
-      <div class="text-xs text-slate-400">{{ product.timestamp|naturaltime }}</div>
+    <div class='flex justify-between items-center w-full px-2'>
+      <div>
+        <div class="text-sm font-semibold {% if product.is_read %}text-slate-400{% else %}text-slate-200{% endif %}">{{ product.product.asin }}</div>
+        <div class="text-sm {% if product.is_read %} text-slate-400{% else %} text-slate-400{% endif %}">{{ product.message }}</div>
+      </div>
+      <div class="text-xs {% if product.is_read %} text-slate-400{% else %} text-slate-400{% endif %}">{{ product.timestamp|naturaltime }}</div>
     </div>
   </a>
 {% endfor %}

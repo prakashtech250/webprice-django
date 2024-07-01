@@ -135,10 +135,11 @@
                     x-transition:leave-end="opacity-0"
                     @click.away="closeNotificationsMenu"
                     @keydown.escape="closeNotificationsMenu"
-                    class="absolute right-0 w-80 p-2 mt-2 space-y-2  border  rounded-lg shadow-md text-slate-200 border-slate-800 bg-slate-700"
+                    class="absolute right-0 w-80 p-2 my-2 space-y-2  border  rounded-lg shadow-md text-slate-200 border-slate-800 bg-slate-700"
                     aria-label="submenu"
                   >
                   {% if unread_notification %}
+                  <p class='text-md text-center'>Notifications</p>
                   {% include '_notification_block.html' with notifications=unread_notification|slice:":5" %}
                   <div class='flex justify-between px-2'>
                     <a class='text-xs' href={% url 'notifications' %}>View More</a>
